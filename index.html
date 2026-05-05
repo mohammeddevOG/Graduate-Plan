@@ -400,47 +400,68 @@ footer{
 /* ── SYNC BAR ── */
 .sync-bar{
   display:flex;align-items:center;justify-content:space-between;
-  padding:6px 20px;background:var(--paper2);
+  padding:7px 20px;background:var(--paper2);
   border-bottom:1px solid var(--rule);font-family:'Courier Prime',monospace;
   font-size:10px;flex-wrap:wrap;gap:8px;
 }
-.sync-badge{
-  padding:2px 8px;border:1px solid currentColor;border-radius:2px;
-  font-family:'Courier Prime',monospace;font-size:10px;letter-spacing:.05em;
+.sync-dot{
+  display:inline-block;width:7px;height:7px;border-radius:50%;
+  margin-right:6px;flex-shrink:0;vertical-align:middle;
 }
-.sync-badge.ok{color:var(--green)}
-.sync-badge.warn{color:var(--amber)}
-.sync-badge.err{color:var(--accent)}
-.sync-badge.saving{color:var(--accent2);animation:pulse .8s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.dot-ok{background:var(--green)}
+.dot-warn{background:var(--amber)}
+.dot-err{background:var(--accent)}
+.dot-spin{background:var(--accent2);animation:pulse .7s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.2}}
+.sync-status-text{font-family:'Courier Prime',monospace;font-size:10px;color:var(--muted)}
 .sync-btn{
   font-family:'Courier Prime',monospace;font-size:10px;
   background:var(--ink);color:var(--paper);border:none;
   padding:4px 10px;cursor:pointer;letter-spacing:.06em;
-  text-transform:uppercase;
+  text-transform:uppercase;transition:opacity .15s;
 }
-.sync-btn:hover{opacity:.8}
+.sync-btn:hover{opacity:.75}
 .sync-btn.outline{background:transparent;color:var(--ink);border:1px solid var(--ink)}
+.sync-btn:disabled{opacity:.35;cursor:not-allowed}
+
+/* ── SETUP PANEL ── */
 #sync-panel{
-  display:none;padding:20px;
+  display:none;padding:24px 20px;
   background:var(--paper2);border-bottom:2px solid var(--ink);
-  font-size:13px;
 }
-.sync-panel-inner{max-width:600px;margin:0 auto}
-.sync-steps h4{font-family:'Playfair Display',serif;font-size:1rem;font-style:italic;margin-bottom:12px}
-.sync-field{display:flex;flex-direction:column;gap:4px;margin-bottom:12px}
-.sync-field label{font-family:'Courier Prime',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
-.sync-field input{
-  font-family:'Courier Prime',monospace;font-size:12px;
-  padding:7px 10px;border:1px solid var(--rule2);
-  background:var(--paper);color:var(--ink);outline:none;width:100%;
+.sp-inner{max-width:640px;margin:0 auto}
+.sp-title{font-family:'Playfair Display',serif;font-size:1.1rem;font-style:italic;margin-bottom:4px}
+.sp-subtitle{font-family:'Courier Prime',monospace;font-size:10px;color:var(--muted);margin-bottom:18px;letter-spacing:.06em;text-transform:uppercase}
+.sp-steps{counter-reset:step;display:flex;flex-direction:column;gap:14px;margin-bottom:18px}
+.sp-step{display:flex;gap:12px;align-items:flex-start}
+.sp-step-num{
+  width:22px;height:22px;border-radius:50%;background:var(--ink);color:var(--paper);
+  font-family:'Courier Prime',monospace;font-size:10px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;
 }
-.sync-field input:focus{border-color:var(--ink)}
-.sync-row{display:flex;gap:8px;flex-wrap:wrap}
-.sync-note{font-size:12px;color:var(--muted);font-style:italic;line-height:1.5;margin-top:8px}
-.sync-success{background:rgba(26,92,26,.08);border:1px solid var(--green);padding:12px;margin-top:8px}
-.sync-success p{font-size:12px;line-height:1.6}
-.sync-success strong{color:var(--green)}
+.sp-step-body{flex:1}
+.sp-step-body p{font-size:12px;line-height:1.6;margin-bottom:6px}
+.sp-step-body a{color:var(--accent2)}
+.sp-field label{display:block;font-family:'Courier Prime',monospace;font-size:9px;
+  text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:4px}
+.sp-field input{
+  width:100%;font-family:'Courier Prime',monospace;font-size:12px;
+  padding:7px 10px;border:1px solid var(--rule2);background:var(--paper);
+  color:var(--ink);outline:none;
+}
+.sp-field input:focus{border-color:var(--ink)}
+.sp-row{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.sp-success{
+  border:1px solid var(--green);background:rgba(26,92,26,.06);
+  padding:12px 14px;margin-top:12px;display:none;
+}
+.sp-success p{font-size:12px;line-height:1.7}
+.sp-success code{
+  font-family:'Courier Prime',monospace;font-size:11px;
+  background:var(--paper3);padding:1px 4px;
+}
+.sp-note{font-size:11px;color:var(--muted);font-style:italic;border-top:1px solid var(--rule);padding-top:12px;line-height:1.6}
+
 </style>
 </head>
 <body>
@@ -481,58 +502,78 @@ footer{
 
 <!-- SYNC BAR -->
 <div class="sync-bar">
-  <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
-    <span style="letter-spacing:.08em;text-transform:uppercase">☁ Cloud Sync:</span>
-    <span class="sync-badge warn" id="sync-status">Checking…</span>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span id="sync-dot" class="sync-dot dot-warn"></span>
+    <span id="sync-txt" class="sync-status-text">Checking…</span>
   </div>
-  <div style="display:flex;gap:6px;flex-wrap:wrap">
-    <button class="sync-btn outline" onclick="loadFromCloud()">↓ Pull from Cloud</button>
-    <button class="sync-btn outline" onclick="saveToCloud()">↑ Push to Cloud</button>
-    <button class="sync-btn" onclick="toggleSyncPanel()">⚙ Setup Sync</button>
+  <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
+    <span style="letter-spacing:.08em;text-transform:uppercase;margin-right:4px">☁ GitHub Sync</span>
+    <button class="sync-btn outline" onclick="ghPull()">↓ Pull</button>
+    <button class="sync-btn outline" onclick="ghPush()">↑ Push</button>
+    <button class="sync-btn" onclick="toggleSyncPanel()">⚙ Setup</button>
   </div>
 </div>
 
-<!-- SYNC PANEL -->
+<!-- SETUP PANEL -->
 <div id="sync-panel">
-  <div class="sync-panel-inner">
-    <div class="sync-steps">
-      <h4>Cloud Sync Setup — JSONBin.io (Free)</h4>
+  <div class="sp-inner">
+    <div class="sp-title">GitHub Sync Setup</div>
+    <div class="sp-subtitle">Free · Your data lives in your own GitHub repo · Works on all devices</div>
 
-      <div style="margin-bottom:16px;padding:10px;border:1px solid var(--rule);font-size:12px;line-height:1.7;font-family:'Courier Prime',monospace">
-        <strong>Step 1:</strong> Go to <a href="https://jsonbin.io" target="_blank" style="color:var(--accent2)">jsonbin.io</a> → Sign up free →
-        Go to API Keys → Copy your <strong>Master Key</strong><br>
-        <strong>Step 2:</strong> Paste it below and click "Create New Bin" (first device) or "Connect Existing" (other devices)
-      </div>
-
-      <div class="sync-field">
-        <label>JSONBin Master Key (starts with $2b$...)</label>
-        <input type="password" id="api-key-input" placeholder="$2b$10$...your master key...">
-      </div>
-
-      <div id="setup-step2">
-        <div class="sync-row" style="margin-bottom:12px">
-          <button class="sync-btn" onclick="createBin()">✦ Create New Bin (first time)</button>
-          <span style="font-family:'Courier Prime',monospace;font-size:11px;align-self:center;color:var(--muted)">— or —</span>
-        </div>
-        <div class="sync-field">
-          <label>Bin ID (if already created on another device)</label>
-          <input type="text" id="bin-id-input" placeholder="64abc123...">
-        </div>
-        <button class="sync-btn outline" onclick="connectExisting()">Connect Existing Bin</button>
-      </div>
-
-      <div id="setup-done" style="display:none" class="sync-success">
-        <p>✅ <strong>Cloud sync active!</strong><br>
-        Bin ID: <code id="bin-id-display" style="font-family:'Courier Prime',monospace;font-size:11px"></code><br>
-        Copy this Bin ID to set up sync on your other devices (phone, tablet, etc.).<br>
-        Grades auto-save to cloud every time you enter one.</p>
-        <div style="margin-top:10px">
-          <button class="sync-btn outline" onclick="resetSync()" style="font-size:9px">Disconnect</button>
+    <div class="sp-steps">
+      <div class="sp-step">
+        <div class="sp-step-num">1</div>
+        <div class="sp-step-body">
+          <p>Create a free account at <a href="https://github.com" target="_blank">github.com</a> → Create a new <strong>public</strong> repository (e.g. <code style="font-family:'Courier Prime',monospace;font-size:11px">gpa-tracker</code>) → Upload this HTML file renamed as <strong>index.html</strong></p>
         </div>
       </div>
-
-      <p class="sync-note">Your API key is stored only in your browser — never sent anywhere except JSONBin. Free tier allows 10,000 requests/month which is far more than enough.</p>
+      <div class="sp-step">
+        <div class="sp-step-num">2</div>
+        <div class="sp-step-body">
+          <p>In GitHub: <strong>Settings → Pages → Branch: main → Save</strong> — your site goes live at <code style="font-family:'Courier Prime',monospace;font-size:11px">https://username.github.io/repo-name</code></p>
+        </div>
+      </div>
+      <div class="sp-step">
+        <div class="sp-step-num">3</div>
+        <div class="sp-step-body">
+          <p>Create a Personal Access Token: GitHub → <strong>Settings → Developer settings → Personal access tokens → Tokens (classic) → Generate</strong> → check <strong>repo</strong> scope → copy the token</p>
+        </div>
+      </div>
+      <div class="sp-step">
+        <div class="sp-step-num">4</div>
+        <div class="sp-step-body">
+          <p>Fill in the fields below and click Connect. Then open your GitHub Pages URL on any device — grades sync automatically.</p>
+          <div class="sp-field" style="margin-bottom:8px">
+            <label>GitHub Personal Access Token (ghp_...)</label>
+            <input type="password" id="gh-token" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+            <div class="sp-field">
+              <label>GitHub Username</label>
+              <input type="text" id="gh-owner" placeholder="yourusername">
+            </div>
+            <div class="sp-field">
+              <label>Repository Name</label>
+              <input type="text" id="gh-repo" placeholder="gpa-tracker">
+            </div>
+          </div>
+          <div class="sp-row">
+            <button class="sync-btn" onclick="saveGhConfig()">✦ Connect & Sync</button>
+          </div>
+        </div>
+      </div>
     </div>
+
+    <div id="sp-success" class="sp-success">
+      <p>✅ <strong>GitHub sync active!</strong><br>
+      Your grades are saved to <code>grades.json</code> in your repo and sync across all devices automatically.<br>
+      Share this URL with yourself: <a id="sp-success-url" href="#" target="_blank" style="color:var(--accent2);font-family:'Courier Prime',monospace;font-size:11px"></a></p>
+      <div style="margin-top:8px">
+        <button class="sync-btn outline" onclick="disconnectGh()" style="font-size:9px">Disconnect</button>
+      </div>
+    </div>
+
+    <p class="sp-note">Your token is stored only in your browser's localStorage — never sent anywhere except GitHub's own API. Use a token with only the <strong>repo</strong> scope for safety. You can revoke it anytime from GitHub settings.</p>
   </div>
 </div>
 
@@ -1263,6 +1304,140 @@ function buildUnis(){
   </div>`;
 }
 
+
+// ══════════════════════════════════════════════════════════════════
+// GITHUB SYNC
+// ══════════════════════════════════════════════════════════════════
+const GH = {
+  token: localStorage.getItem('mh_gh_token') || '',
+  owner: localStorage.getItem('mh_gh_owner') || '',
+  repo:  localStorage.getItem('mh_gh_repo')  || '',
+  file:  'grades.json',
+  sha:   '',   // needed for updates
+  api:   'https://api.github.com',
+};
+
+let syncTimer = null;
+let pendingSave = false;
+
+function setDot(cls, msg){
+  const dot = document.getElementById('sync-dot');
+  const txt = document.getElementById('sync-txt');
+  if(dot){ dot.className = 'sync-dot ' + cls; }
+  if(txt){ txt.textContent = msg; }
+}
+
+// ── READ grades.json from GitHub ──
+async function ghPull(){
+  if(!GH.token || !GH.owner || !GH.repo){ setDot('dot-warn','Not configured'); return; }
+  setDot('dot-spin','Pulling…');
+  try{
+    const url = `${GH.api}/repos/${GH.owner}/${GH.repo}/contents/${GH.file}`;
+    const r = await fetch(url, { headers:{ Authorization:`token ${GH.token}`, Accept:'application/vnd.github.v3+json' }});
+    if(r.status === 404){
+      // File doesn\'t exist yet — create it
+      setDot('dot-warn','No grades.json yet — will create on first save');
+      GH.sha = '';
+      return;
+    }
+    if(!r.ok) throw new Error(`HTTP ${r.status}`);
+    const data = await r.json();
+    GH.sha = data.sha;
+    const decoded = JSON.parse(atob(data.content.replace(/\n/g,'')));
+    if(decoded && typeof decoded === 'object'){
+      userGrades = decoded;
+      _rawSave();
+      buildTranscript();
+      updateDash();
+      setDot('dot-ok','Synced from GitHub ✓');
+      setTimeout(()=>setDot('dot-ok','Connected to GitHub'),2200);
+    }
+  } catch(e){
+    setDot('dot-err','Pull failed: ' + e.message);
+  }
+}
+
+// ── WRITE grades.json to GitHub ──
+async function ghPush(){
+  if(!GH.token || !GH.owner || !GH.repo){ setDot('dot-warn','Not configured'); return; }
+  setDot('dot-spin','Saving…');
+  try{
+    const url = `${GH.api}/repos/${GH.owner}/${GH.repo}/contents/${GH.file}`;
+    const body = {
+      message: 'Update grades — ' + new Date().toISOString().slice(0,16).replace('T',' '),
+      content: btoa(JSON.stringify(userGrades, null, 2)),
+    };
+    if(GH.sha) body.sha = GH.sha;
+    const r = await fetch(url, {
+      method: 'PUT',
+      headers:{ Authorization:`token ${GH.token}`, Accept:'application/vnd.github.v3+json', 'Content-Type':'application/json' },
+      body: JSON.stringify(body)
+    });
+    if(!r.ok){ const e = await r.json(); throw new Error(e.message); }
+    const data = await r.json();
+    GH.sha = data.content.sha;
+    setDot('dot-ok','Saved to GitHub ✓');
+    setTimeout(()=>setDot('dot-ok','Connected to GitHub'),2200);
+    pendingSave = false;
+  } catch(e){
+    setDot('dot-err','Push failed: ' + e.message);
+  }
+}
+
+// ── DEBOUNCED AUTO-SAVE (waits 1.5s after last grade input) ──
+function scheduleGhPush(){
+  pendingSave = true;
+  clearTimeout(syncTimer);
+  syncTimer = setTimeout(ghPush, 1500);
+}
+
+// ── Override save() to also push to GitHub ──
+const _rawSave = save;
+function save(){
+  _rawSave();
+  if(GH.token && GH.owner && GH.repo) scheduleGhPush();
+}
+
+// ── SETUP ──
+function toggleSyncPanel(){
+  const p = document.getElementById('sync-panel');
+  p.style.display = p.style.display === 'none' ? 'block' : 'none';
+  // Pre-fill stored values
+  if(GH.token){ document.getElementById('gh-token').value = GH.token; }
+  if(GH.owner){ document.getElementById('gh-owner').value = GH.owner; }
+  if(GH.repo){
+    document.getElementById('gh-repo').value = GH.repo;
+    document.getElementById('sp-success').style.display = 'block';
+    document.getElementById('sp-success-url').textContent = `https://${GH.owner}.github.io/${GH.repo}`;
+    document.getElementById('sp-success-url').href = `https://${GH.owner}.github.io/${GH.repo}`;
+  }
+}
+
+function saveGhConfig(){
+  const token = document.getElementById('gh-token').value.trim();
+  const owner = document.getElementById('gh-owner').value.trim().toLowerCase();
+  const repo  = document.getElementById('gh-repo').value.trim().toLowerCase();
+  if(!token || !owner || !repo){ alert('Please fill in all three fields'); return; }
+  GH.token = token; GH.owner = owner; GH.repo = repo; GH.sha = '';
+  localStorage.setItem('mh_gh_token', token);
+  localStorage.setItem('mh_gh_owner', owner);
+  localStorage.setItem('mh_gh_repo',  repo);
+  const url = `https://${owner}.github.io/${repo}`;
+  document.getElementById('sp-success').style.display = 'block';
+  document.getElementById('sp-success-url').textContent = url;
+  document.getElementById('sp-success-url').href = url;
+  ghPull();
+}
+
+function disconnectGh(){
+  if(!confirm('Disconnect GitHub sync? Local grades are kept.')) return;
+  GH.token=''; GH.owner=''; GH.repo=''; GH.sha='';
+  ['mh_gh_token','mh_gh_owner','mh_gh_repo'].forEach(k=>localStorage.removeItem(k));
+  document.getElementById('sp-success').style.display='none';
+  setDot('dot-warn','Disconnected');
+}
+
+
 // ── TABS ──
 function showTab(id,btn){
   document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
@@ -1270,127 +1445,6 @@ function showTab(id,btn){
   document.getElementById(`tab-${id}`).classList.add('active');
   if(btn)btn.classList.add('active');
 }
-
-
-// ══════════════════════════════════════════════════════════════════
-// CLOUD SYNC — JSONBin.io
-// ══════════════════════════════════════════════════════════════════
-const SYNC = {
-  BIN_ID:  localStorage.getItem('mh_bin_id')  || '',
-  API_KEY: localStorage.getItem('mh_api_key') || '',
-  BASE:    'https://api.jsonbin.io/v3',
-  status:  null,
-};
-
-function syncUI(msg, cls){
-  const el = document.getElementById('sync-status');
-  if(!el) return;
-  el.textContent = msg;
-  el.className = 'sync-badge ' + (cls||'');
-}
-
-async function saveToCloud(){
-  if(!SYNC.API_KEY || !SYNC.BIN_ID){ syncUI('Not configured','warn'); return; }
-  syncUI('Saving…','saving');
-  try{
-    const r = await fetch(`${SYNC.BASE}/b/${SYNC.BIN_ID}`,{
-      method:'PUT',
-      headers:{'Content-Type':'application/json','X-Master-Key':SYNC.API_KEY,'X-Bin-Versioning':'false'},
-      body: JSON.stringify(userGrades)
-    });
-    if(!r.ok) throw new Error(r.status);
-    syncUI('✓ Saved to cloud','ok');
-    setTimeout(()=>syncUI('Connected','ok'), 2000);
-  } catch(e){ syncUI('Save failed','err'); }
-}
-
-async function loadFromCloud(){
-  if(!SYNC.API_KEY || !SYNC.BIN_ID){ return; }
-  syncUI('Loading…','saving');
-  try{
-    const r = await fetch(`${SYNC.BASE}/b/${SYNC.BIN_ID}/latest`,{
-      headers:{'X-Master-Key':SYNC.API_KEY}
-    });
-    if(!r.ok) throw new Error(r.status);
-    const data = await r.json();
-    const grades = data.record || {};
-    if(typeof grades === 'object' && !Array.isArray(grades)){
-      userGrades = grades;
-      save(); // also update localStorage
-      buildTranscript();
-      updateDash();
-      syncUI('✓ Synced from cloud','ok');
-      setTimeout(()=>syncUI('Connected','ok'), 2000);
-    }
-  } catch(e){ syncUI('Load failed — using local','warn'); }
-}
-
-async function createBin(){
-  const key = document.getElementById('api-key-input').value.trim();
-  if(!key){ alert('Please enter your API key first'); return; }
-  syncUI('Creating bin…','saving');
-  try{
-    const r = await fetch(`${SYNC.BASE}/b`,{
-      method:'POST',
-      headers:{'Content-Type':'application/json','X-Master-Key':key,'X-Bin-Name':'Mohammed GPA Grades','X-Collection-Id':''},
-      body: JSON.stringify(userGrades)
-    });
-    if(!r.ok) throw new Error(await r.text());
-    const data = await r.json();
-    SYNC.BIN_ID  = data.metadata.id;
-    SYNC.API_KEY = key;
-    localStorage.setItem('mh_bin_id',  SYNC.BIN_ID);
-    localStorage.setItem('mh_api_key', SYNC.API_KEY);
-    document.getElementById('bin-id-display').textContent = SYNC.BIN_ID;
-    document.getElementById('setup-done').style.display = 'block';
-    document.getElementById('setup-step2').style.display = 'none';
-    syncUI('✓ Cloud sync active','ok');
-  } catch(e){ syncUI('Error: ' + e.message,'err'); alert('Error creating bin: ' + e.message); }
-}
-
-function connectExisting(){
-  const key = document.getElementById('api-key-input').value.trim();
-  const bid = document.getElementById('bin-id-input').value.trim();
-  if(!key || !bid){ alert('Please enter both API key and Bin ID'); return; }
-  SYNC.API_KEY = key; SYNC.BIN_ID = bid;
-  localStorage.setItem('mh_bin_id', bid);
-  localStorage.setItem('mh_api_key', key);
-  document.getElementById('bin-id-display').textContent = bid;
-  document.getElementById('setup-done').style.display = 'block';
-  document.getElementById('setup-step2').style.display = 'none';
-  loadFromCloud();
-}
-
-function resetSync(){
-  if(!confirm('Disconnect cloud sync? Your local grades are kept.')) return;
-  SYNC.API_KEY=''; SYNC.BIN_ID='';
-  localStorage.removeItem('mh_bin_id');
-  localStorage.removeItem('mh_api_key');
-  document.getElementById('setup-done').style.display = 'none';
-  document.getElementById('setup-step2').style.display = 'block';
-  syncUI('Not configured','warn');
-}
-
-function toggleSyncPanel(){
-  const p = document.getElementById('sync-panel');
-  p.style.display = p.style.display==='none' ? 'block' : 'none';
-  // Pre-fill if already configured
-  if(SYNC.API_KEY){
-    document.getElementById('api-key-input').value = SYNC.API_KEY;
-    document.getElementById('bin-id-input').value  = SYNC.BIN_ID;
-    document.getElementById('bin-id-display').textContent = SYNC.BIN_ID;
-    document.getElementById('setup-done').style.display = 'block';
-    document.getElementById('setup-step2').style.display = 'none';
-  }
-}
-
-// Override save() to also push to cloud
-const _localSave = save;
-function save(){
-  _localSave();
-  if(SYNC.API_KEY && SYNC.BIN_ID) saveToCloud();
-}
-
 
 // ── INIT ──
 document.getElementById('today-date').textContent=new Date().toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
@@ -1400,12 +1454,12 @@ buildRequirements();
 buildTrend();
 buildUnis();
 updateDash();
-// Init sync
-if(SYNC.API_KEY && SYNC.BIN_ID){
-  syncUI('Connecting…','saving');
-  loadFromCloud();
+// GitHub sync init
+if(GH.token && GH.owner && GH.repo){
+  setDot('dot-spin','Connecting to GitHub…');
+  ghPull();
 } else {
-  syncUI('Not configured — click ⚙ Setup Sync','warn');
+  setDot('dot-warn','Not configured — click ⚙ Setup');
 }
 </script>
 </body>
