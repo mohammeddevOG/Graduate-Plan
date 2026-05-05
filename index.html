@@ -536,7 +536,9 @@ footer{
       <div class="sp-step">
         <div class="sp-step-num">3</div>
         <div class="sp-step-body">
-          <p>Create a Personal Access Token: GitHub → <strong>Settings → Developer settings → Personal access tokens → Tokens (classic) → Generate</strong> → check <strong>repo</strong> scope → copy the token</p>
+          <p>Create a token: GitHub → <strong>Settings → Developer settings → Personal access tokens</strong></p>
+          <p style="margin-top:4px">· <strong>Fine-grained token</strong> (recommended): Select your repo → Permissions → <strong>Contents: Read & Write</strong> + Metadata: Read</p>
+          <p>· <strong>Classic token</strong> (simpler): Check the <strong>repo</strong> scope checkbox</p>
         </div>
       </div>
       <div class="sp-step">
@@ -755,7 +757,12 @@ const REPLACES={
 
 let userGrades={};
 try{userGrades=JSON.parse(localStorage.getItem('mh_acad_grades')||'{}');}catch(e){}
-function save(){try{localStorage.setItem('mh_acad_grades',JSON.stringify(userGrades));}catch(e){}}
+function save(){
+  try{localStorage.setItem('mh_acad_grades',JSON.stringify(userGrades));}catch(e){}
+  if(typeof scheduleGhPush==='function' && GH && GH.token && GH.owner && GH.repo){
+    scheduleGhPush();
+  }
+}
 function getGrade(term,code,def){const k=`${term}:${code}`;return userGrades[k]!==undefined?userGrades[k]:def;}
 
 const TERM_LABELS={
@@ -1333,7 +1340,7 @@ async function ghPull(){
   setDot('dot-spin','Pulling…');
   try{
     const url = `${GH.api}/repos/${GH.owner}/${GH.repo}/contents/${GH.file}`;
-    const r = await fetch(url, { headers:{ Authorization:`token ${GH.token}`, Accept:'application/vnd.github.v3+json' }});
+    const r = await fetch(url, { headers:{ Authorization:`Bearer ${GH.token}`, Accept:'application/vnd.github.v3+json' }});
     if(r.status === 404){
       // File doesn\'t exist yet — create it
       setDot('dot-warn','No grades.json yet — will create on first save');
@@ -1346,7 +1353,7 @@ async function ghPull(){
     const decoded = JSON.parse(atob(data.content.replace(/\n/g,'')));
     if(decoded && typeof decoded === 'object'){
       userGrades = decoded;
-      _rawSave();
+      try{localStorage.setItem('mh_acad_grades',JSON.stringify(userGrades));}catch(e){}
       buildTranscript();
       updateDash();
       setDot('dot-ok','Synced from GitHub ✓');
@@ -1370,7 +1377,7 @@ async function ghPush(){
     if(GH.sha) body.sha = GH.sha;
     const r = await fetch(url, {
       method: 'PUT',
-      headers:{ Authorization:`token ${GH.token}`, Accept:'application/vnd.github.v3+json', 'Content-Type':'application/json' },
+      headers:{ Authorization:`Bearer ${GH.token}`, Accept:'application/vnd.github.v3+json', 'Content-Type':'application/json' },
       body: JSON.stringify(body)
     });
     if(!r.ok){ const e = await r.json(); throw new Error(e.message); }
@@ -1380,7 +1387,10 @@ async function ghPush(){
     setTimeout(()=>setDot('dot-ok','Connected to GitHub'),2200);
     pendingSave = false;
   } catch(e){
-    setDot('dot-err','Push failed: ' + e.message);
+    const msg = e.message.includes('Resource not accessible') 
+      ? 'Token missing Contents: write permission — see Setup'
+      : 'Push failed: ' + e.message;
+    setDot('dot-err', msg);
   }
 }
 
@@ -1391,12 +1401,7 @@ function scheduleGhPush(){
   syncTimer = setTimeout(ghPush, 1500);
 }
 
-// ── Override save() to also push to GitHub ──
-const _rawSave = save;
-function save(){
-  _rawSave();
-  if(GH.token && GH.owner && GH.repo) scheduleGhPush();
-}
+// ── GitHub sync patches save() above via scheduleGhPush ──
 
 // ── SETUP ──
 function toggleSyncPanel(){
