@@ -1,0 +1,1412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mohammed Alhazmi · Academic Record</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#1a1208;
+  --ink2:#2c1f0e;
+  --paper:#f5f0e8;
+  --paper2:#ede8dc;
+  --paper3:#e4ddd0;
+  --rule:#c8bfa8;
+  --rule2:#b5a892;
+  --accent:#8b1a1a;
+  --accent2:#1a4a8b;
+  --gold:#b8860b;
+  --green:#1a5c1a;
+  --amber:#8b5e00;
+  --muted:#6b5d4a;
+  --col-w:680px;
+}
+
+html{scroll-behavior:smooth}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:'EB Garamond',Georgia,serif;
+  font-size:16px;
+  line-height:1.6;
+  min-height:100vh;
+}
+
+/* ── PAPER TEXTURE ── */
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:
+    repeating-linear-gradient(0deg,transparent,transparent 27px,rgba(139,161,139,.06) 27px,rgba(139,161,139,.06) 28px),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");
+}
+
+/* ── MASTHEAD ── */
+.masthead{
+  border-bottom:3px double var(--ink);
+  padding:32px 24px 20px;
+  text-align:center;
+  position:relative;
+  background:var(--paper);
+}
+.masthead::after{
+  content:'';display:block;height:1px;background:var(--ink);margin-top:8px;
+}
+.edition-line{
+  font-family:'Courier Prime',monospace;font-size:10px;letter-spacing:.15em;
+  text-transform:uppercase;color:var(--muted);margin-bottom:12px;
+  display:flex;justify-content:space-between;align-items:center;
+  border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);
+  padding:4px 0;
+}
+.masthead h1{
+  font-family:'Playfair Display',Georgia,serif;
+  font-size:clamp(2.4rem,7vw,4.5rem);
+  font-weight:900;line-height:1;letter-spacing:-.02em;
+  color:var(--ink);margin-bottom:4px;
+}
+.masthead .sub{
+  font-family:'Playfair Display',Georgia,serif;
+  font-style:italic;font-size:clamp(1rem,2.5vw,1.4rem);
+  color:var(--muted);margin-bottom:14px;
+}
+.masthead-rule{height:4px;background:var(--ink);margin:10px 0 6px}
+.masthead-rule2{height:1px;background:var(--ink)}
+
+/* ── GPA TICKER ── */
+.ticker{
+  background:var(--ink);color:var(--paper);
+  font-family:'Courier Prime',monospace;font-size:11px;
+  padding:6px 16px;display:flex;gap:32px;overflow-x:auto;
+  scrollbar-width:none;align-items:center;flex-wrap:wrap;
+}
+.ticker::-webkit-scrollbar{display:none}
+.ticker-item{white-space:nowrap;display:flex;align-items:center;gap:8px}
+.ticker-item .t-label{opacity:.6;text-transform:uppercase;letter-spacing:.08em;font-size:10px}
+.ticker-item .t-val{font-weight:700;font-size:13px}
+.ticker-item .t-val.up{color:#7dcea0}
+.ticker-item .t-val.warn{color:#f0b27a}
+
+/* ── NAV ── */
+.nav{
+  border-bottom:2px solid var(--ink);
+  display:flex;overflow-x:auto;scrollbar-width:none;
+  background:var(--paper2);
+}
+.nav::-webkit-scrollbar{display:none}
+.nav-btn{
+  flex-shrink:0;padding:10px 20px;
+  font-family:'Courier Prime',monospace;font-size:11px;
+  font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted);background:transparent;border:none;
+  border-right:1px solid var(--rule);cursor:pointer;
+  transition:all .15s;position:relative;
+}
+.nav-btn:hover{background:var(--paper3);color:var(--ink)}
+.nav-btn.active{background:var(--ink);color:var(--paper)}
+.nav-btn.active::after{
+  content:'▼';position:absolute;bottom:-8px;left:50%;transform:translateX(-50%);
+  font-size:8px;color:var(--ink);
+}
+
+/* ── MAIN LAYOUT ── */
+.container{max-width:1200px;margin:0 auto;padding:0 20px}
+.section{display:none;padding:32px 0 60px}
+.section.active{display:block}
+
+/* ── SECTION HEADER (newspaper-style) ── */
+.sec-head{
+  border-top:4px solid var(--ink);border-bottom:1px solid var(--ink);
+  padding:10px 0;margin-bottom:28px;display:flex;align-items:baseline;
+  justify-content:space-between;gap:16px;
+}
+.sec-head h2{
+  font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:700;
+  font-style:italic;
+}
+.sec-head .byline{
+  font-family:'Courier Prime',monospace;font-size:10px;
+  color:var(--muted);letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;
+}
+
+/* ── PULL QUOTES / GPA CARDS ── */
+.stats-row{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  gap:0;border:2px solid var(--ink);margin-bottom:28px;
+}
+.stat-cell{
+  padding:16px 18px;border-right:1px solid var(--ink);
+  position:relative;
+}
+.stat-cell:last-child{border-right:none}
+.stat-cell .s-label{
+  font-family:'Courier Prime',monospace;font-size:9px;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--muted);
+  margin-bottom:6px;display:block;
+}
+.stat-cell .s-value{
+  font-family:'Playfair Display',serif;font-size:2rem;
+  font-weight:700;line-height:1;color:var(--ink);
+}
+.stat-cell .s-sub{
+  font-family:'Courier Prime',monospace;font-size:10px;
+  color:var(--muted);margin-top:4px;
+}
+.stat-cell.highlight{background:var(--ink)}
+.stat-cell.highlight .s-label{color:rgba(245,240,232,.6)}
+.stat-cell.highlight .s-value{color:var(--paper)}
+.stat-cell.highlight .s-sub{color:rgba(245,240,232,.5)}
+
+/* ── TRANSCRIPT ── */
+.term-section{margin-bottom:28px}
+.term-head{
+  display:grid;grid-template-columns:1fr auto auto auto;
+  align-items:center;gap:12px;
+  background:var(--ink);color:var(--paper);
+  padding:8px 14px;
+  font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;font-style:italic;
+}
+.term-head .th-gpa{
+  font-family:'Courier Prime',monospace;font-size:11px;font-style:normal;font-weight:400;
+  background:rgba(245,240,232,.15);padding:2px 8px;border-radius:2px;
+  white-space:nowrap;
+}
+.term-head .th-cr{
+  font-family:'Courier Prime',monospace;font-size:10px;font-style:normal;
+  opacity:.6;white-space:nowrap;
+}
+.course-row{
+  display:grid;grid-template-columns:90px 110px 1fr 40px 80px 70px 110px;
+  gap:0;align-items:center;
+  border-bottom:1px solid var(--rule);
+  padding:7px 14px;
+  transition:background .1s;
+  font-size:14px;
+}
+.course-row:hover{background:var(--paper3)}
+.course-row.alt{background:rgba(200,191,168,.15)}
+.course-row.alt:hover{background:var(--paper3)}
+.col-term{font-family:'Courier Prime',monospace;font-size:10px;color:var(--muted)}
+.col-code{font-family:'Courier Prime',monospace;font-size:11px;font-weight:700;color:var(--ink2)}
+.col-name{font-size:13px;color:var(--ink)}
+.col-cr{text-align:center;font-family:'Courier Prime',monospace;font-size:12px;color:var(--muted)}
+.col-grade{text-align:center;font-family:'Courier Prime',monospace;font-size:13px;font-weight:700}
+.col-pts{text-align:center;font-family:'Courier Prime',monospace;font-size:11px;color:var(--muted)}
+.col-status{text-align:right}
+
+.grade-input{
+  background:rgba(184,134,11,.12);border:1px solid var(--gold);
+  color:var(--gold);font-family:'Courier Prime',monospace;
+  font-size:12px;font-weight:700;padding:3px 6px;
+  border-radius:2px;width:56px;text-align:center;outline:none;
+  transition:all .2s;
+}
+.grade-input:focus{background:rgba(184,134,11,.2);box-shadow:0 0 0 2px rgba(184,134,11,.3)}
+.grade-input.filled{background:rgba(26,92,26,.1);border-color:var(--green);color:var(--green)}
+
+.badge{
+  display:inline-block;font-family:'Courier Prime',monospace;
+  font-size:9px;letter-spacing:.06em;text-transform:uppercase;
+  padding:2px 6px;border:1px solid currentColor;
+  border-radius:2px;white-space:nowrap;
+}
+.b-counted{color:var(--green)}
+.b-replaced{color:var(--accent);text-decoration:line-through}
+.b-inprog{color:var(--amber)}
+.b-planned{color:var(--accent2)}
+.b-replace{color:var(--muted);border-style:dashed}
+.b-cantrepeat{color:var(--accent);font-weight:700}
+
+.grade-hi{color:var(--green)}
+.grade-mid{color:var(--amber)}
+.grade-lo{color:var(--accent)}
+.grade-na{color:var(--rule2)}
+
+/* term GPA summary row */
+.term-summary{
+  display:flex;justify-content:flex-end;gap:24px;
+  padding:6px 14px;background:var(--paper2);
+  border-bottom:2px solid var(--ink);
+  font-family:'Courier Prime',monospace;font-size:11px;color:var(--muted);
+}
+.term-summary strong{color:var(--ink);font-size:12px}
+
+/* ── COLUMN HEADERS ── */
+.course-hdr{
+  display:grid;grid-template-columns:90px 110px 1fr 40px 80px 70px 110px;
+  gap:0;padding:6px 14px;
+  border-bottom:2px solid var(--ink);border-top:1px solid var(--ink);
+  background:var(--paper2);
+}
+.course-hdr span{
+  font-family:'Courier Prime',monospace;font-size:9px;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--muted);
+}
+.course-hdr span:nth-child(n+4){text-align:center}
+.course-hdr span:last-child{text-align:right}
+
+/* ── PHYS2170 ALERT ── */
+.alert-rule{
+  border:1px solid var(--accent);background:rgba(139,26,26,.05);
+  padding:10px 16px;margin-bottom:20px;font-size:13px;
+  display:flex;gap:10px;align-items:flex-start;
+  font-family:'EB Garamond',serif;
+}
+.alert-rule::before{content:'◆';color:var(--accent);flex-shrink:0;margin-top:2px}
+
+/* ── SEMESTER PLAN ── */
+.sem-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}
+.sem-card{border:1px solid var(--rule);background:var(--paper)}
+.sem-card-head{
+  border-bottom:2px solid var(--ink);padding:10px 14px;
+  display:flex;justify-content:space-between;align-items:baseline;
+}
+.sem-card-head h3{
+  font-family:'Playfair Display',serif;font-size:1.1rem;
+  font-weight:700;font-style:italic;
+}
+.sem-card-head .sc-meta{
+  font-family:'Courier Prime',monospace;font-size:10px;color:var(--muted);text-align:right;
+}
+.sem-body{padding:10px 14px}
+.sem-row{
+  display:flex;justify-content:space-between;align-items:baseline;
+  padding:5px 0;border-bottom:1px solid var(--rule);font-size:13px;
+  gap:8px;
+}
+.sem-row:last-of-type{border-bottom:none}
+.sem-row .sr-name{flex:1;min-width:0;color:var(--ink)}
+.sem-row .sr-cat{font-family:'Courier Prime',monospace;font-size:9px;color:var(--muted);flex-shrink:0}
+.sem-row .sr-grade{font-family:'Courier Prime',monospace;font-size:12px;font-weight:700;flex-shrink:0}
+.sem-footer{
+  border-top:1px solid var(--ink);padding:8px 14px;
+  display:flex;justify-content:space-between;
+  font-family:'Courier Prime',monospace;font-size:11px;
+  background:var(--paper2);
+}
+.sem-footer .sf-gpa{font-weight:700;color:var(--accent2)}
+.sem-rep-head{background:var(--ink2);color:var(--paper)}
+.sem-rep-head h3{color:var(--paper)}
+.sem-grad-head{background:var(--ink);color:var(--paper)}
+.sem-grad-head h3{color:var(--paper)}
+
+/* ── REQUIREMENTS ── */
+.req-cols{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px}
+.req-block{border:1px solid var(--rule)}
+.req-block-head{
+  background:var(--ink);color:var(--paper);
+  padding:8px 14px;display:flex;justify-content:space-between;align-items:baseline;
+}
+.req-block-head h3{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;font-style:italic}
+.req-block-head .rh-pct{font-family:'Courier Prime',monospace;font-size:11px;opacity:.7}
+.req-progress{height:4px;background:rgba(245,240,232,.2)}
+.req-progress-fill{height:100%;transition:width .6s ease}
+.req-body{padding:8px 0}
+.req-row{
+  display:flex;align-items:center;gap:8px;
+  padding:5px 14px;border-bottom:1px solid rgba(200,191,168,.3);
+  font-size:13px;
+}
+.req-row:last-child{border-bottom:none}
+.req-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.dot-done{background:var(--green)}
+.dot-prog{background:var(--amber)}
+.dot-plan{background:var(--rule2)}
+.dot-rep{background:var(--accent2)}
+.dot-no{background:var(--accent)}
+.req-row .rr-name{flex:1;color:var(--ink)}
+.req-row .rr-grade{font-family:'Courier Prime',monospace;font-size:11px;font-weight:700;color:var(--muted)}
+.req-row .rr-tag{font-family:'Courier Prime',monospace;font-size:9px;color:var(--muted);letter-spacing:.04em}
+.req-footer{
+  border-top:1px solid var(--rule);padding:7px 14px;
+  display:flex;justify-content:space-between;
+  font-family:'Courier Prime',monospace;font-size:10px;color:var(--muted);
+  background:var(--paper2);
+}
+
+/* ── TREND ── */
+.chart-box{border:1px solid var(--rule);padding:20px;margin-bottom:20px;background:var(--paper)}
+.chart-box h3{font-family:'Playfair Display',serif;font-size:1.1rem;font-style:italic;margin-bottom:4px}
+.chart-box p{font-family:'Courier Prime',monospace;font-size:10px;color:var(--muted);margin-bottom:16px;letter-spacing:.04em}
+.bar-chart{display:flex;align-items:flex-end;gap:6px;height:130px;border-bottom:1px solid var(--ink);border-left:1px solid var(--ink);padding:0 6px;position:relative}
+.bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;min-width:0}
+.bar{width:100%;border-radius:1px 1px 0 0;position:relative;cursor:pointer;transition:opacity .2s}
+.bar:hover{opacity:.8}
+.bar-label{font-family:'Courier Prime',monospace;font-size:9px;color:var(--muted);margin-top:5px;text-align:center}
+.bar-val{font-family:'Courier Prime',monospace;font-size:8px;position:absolute;top:-14px;left:50%;transform:translateX(-50%);color:var(--ink);white-space:nowrap}
+.target-line{position:absolute;left:0;right:0;border-top:1px dashed var(--accent2)}
+.target-label{position:absolute;right:2px;top:-14px;font-family:'Courier Prime',monospace;font-size:9px;color:var(--accent2)}
+
+.proj-row{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.proj-label{flex:1;font-family:'Courier Prime',monospace;font-size:11px;color:var(--ink)}
+.proj-bar-wrap{width:180px;height:6px;background:var(--paper3);border:1px solid var(--rule);flex-shrink:0}
+.proj-bar-fill{height:100%;transition:width .8s ease}
+.proj-val{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;min-width:44px;text-align:right}
+
+/* ── UNIS ── */
+.uni-cols{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:0;border:1px solid var(--rule)}
+.uni-card{border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:18px}
+.uni-card:nth-child(3n){border-right:none}
+.uni-tier-head{
+  border-top:4px solid var(--ink);border-bottom:1px solid var(--rule);
+  padding:8px 0;margin-bottom:14px;margin-top:20px;
+  font-family:'Courier Prime',monospace;font-size:10px;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--muted);
+}
+.uni-tier-head:first-child{margin-top:0}
+.uni-name{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;margin-bottom:2px;line-height:1.2}
+.uni-loc{font-family:'Courier Prime',monospace;font-size:10px;color:var(--muted);margin-bottom:10px}
+.uni-chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.uni-chip{font-family:'Courier Prime',monospace;font-size:10px;padding:2px 7px;border:1px solid currentColor;border-radius:2px}
+.chip-safe{color:var(--green)}
+.chip-good{color:var(--accent2)}
+.chip-warn{color:var(--amber)}
+.chip-reach{color:var(--accent)}
+.chip-gpa{color:var(--muted)}
+.uni-notes{font-size:13px;color:var(--muted);font-style:italic;line-height:1.5}
+.uni-accent-green{border-top:3px solid var(--green)}
+.uni-accent-blue{border-top:3px solid var(--accent2)}
+.uni-accent-amber{border-top:3px solid var(--amber)}
+.uni-accent-red{border-top:3px solid var(--accent)}
+
+/* ── FOOTER ── */
+footer{
+  border-top:3px double var(--ink);padding:20px;text-align:center;
+  font-family:'Courier Prime',monospace;font-size:10px;color:var(--muted);
+  letter-spacing:.06em;background:var(--paper2);
+}
+
+/* ── RESPONSIVE ── */
+@media(max-width:700px){
+  .stats-row{grid-template-columns:repeat(2,1fr)}
+  .course-row,.course-hdr{
+    grid-template-columns:100px 1fr 50px 60px;
+  }
+  .course-row .col-term,.course-row .col-pts,.course-row .col-code,
+  .course-hdr span:nth-child(1),.course-hdr span:nth-child(2),
+  .course-hdr span:nth-child(6){display:none}
+  .edition-line{flex-direction:column;gap:2px;text-align:center}
+  .masthead h1{font-size:2.2rem}
+}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.section.active>*{animation:fadeIn .3s ease both}
+.section.active>*:nth-child(2){animation-delay:.06s}
+.section.active>*:nth-child(3){animation-delay:.12s}
+.section.active>*:nth-child(4){animation-delay:.18s}
+
+/* ── SYNC BAR ── */
+.sync-bar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:6px 20px;background:var(--paper2);
+  border-bottom:1px solid var(--rule);font-family:'Courier Prime',monospace;
+  font-size:10px;flex-wrap:wrap;gap:8px;
+}
+.sync-badge{
+  padding:2px 8px;border:1px solid currentColor;border-radius:2px;
+  font-family:'Courier Prime',monospace;font-size:10px;letter-spacing:.05em;
+}
+.sync-badge.ok{color:var(--green)}
+.sync-badge.warn{color:var(--amber)}
+.sync-badge.err{color:var(--accent)}
+.sync-badge.saving{color:var(--accent2);animation:pulse .8s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.sync-btn{
+  font-family:'Courier Prime',monospace;font-size:10px;
+  background:var(--ink);color:var(--paper);border:none;
+  padding:4px 10px;cursor:pointer;letter-spacing:.06em;
+  text-transform:uppercase;
+}
+.sync-btn:hover{opacity:.8}
+.sync-btn.outline{background:transparent;color:var(--ink);border:1px solid var(--ink)}
+#sync-panel{
+  display:none;padding:20px;
+  background:var(--paper2);border-bottom:2px solid var(--ink);
+  font-size:13px;
+}
+.sync-panel-inner{max-width:600px;margin:0 auto}
+.sync-steps h4{font-family:'Playfair Display',serif;font-size:1rem;font-style:italic;margin-bottom:12px}
+.sync-field{display:flex;flex-direction:column;gap:4px;margin-bottom:12px}
+.sync-field label{font-family:'Courier Prime',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.sync-field input{
+  font-family:'Courier Prime',monospace;font-size:12px;
+  padding:7px 10px;border:1px solid var(--rule2);
+  background:var(--paper);color:var(--ink);outline:none;width:100%;
+}
+.sync-field input:focus{border-color:var(--ink)}
+.sync-row{display:flex;gap:8px;flex-wrap:wrap}
+.sync-note{font-size:12px;color:var(--muted);font-style:italic;line-height:1.5;margin-top:8px}
+.sync-success{background:rgba(26,92,26,.08);border:1px solid var(--green);padding:12px;margin-top:8px}
+.sync-success p{font-size:12px;line-height:1.6}
+.sync-success strong{color:var(--green)}
+</style>
+</head>
+<body>
+
+<!-- MASTHEAD -->
+<header class="masthead">
+  <div class="edition-line container">
+    <span>Vol. IV · Est. Fall 2023</span>
+    <span>University of Colorado Boulder · Department of Physics</span>
+    <span id="today-date">Tuesday, May 5, 2026</span>
+  </div>
+  <div class="masthead-rule"></div>
+  <h1>THE ACADEMIC RECORD</h1>
+  <p class="sub">Mohammed Alhazmi · Physics, Interdisciplinary Track</p>
+  <div class="masthead-rule"></div>
+  <div class="masthead-rule2"></div>
+</header>
+
+<!-- GPA TICKER -->
+<div class="ticker">
+  <div class="ticker-item"><span class="t-label">Cumul. GPA</span><span class="t-val up" id="tk-gpa">—</span></div>
+  <div class="ticker-item"><span class="t-label">Credits</span><span class="t-val" id="tk-cr">—</span></div>
+  <div class="ticker-item"><span class="t-label">Best Term</span><span class="t-val up">3.606 · SP26</span></div>
+  <div class="ticker-item"><span class="t-label">Proj. Final</span><span class="t-val warn" id="tk-proj">—</span></div>
+  <div class="ticker-item"><span class="t-label">Remaining</span><span class="t-val" id="tk-rem">— cr</span></div>
+  <div class="ticker-item"><span class="t-label">Graduation</span><span class="t-val">Spring 2028</span></div>
+  <div class="ticker-item"><span class="t-label">Target</span><span class="t-val">MSc Medical Physics</span></div>
+</div>
+
+<!-- NAV -->
+<nav class="nav">
+  <button class="nav-btn active" onclick="showTab('transcript',this)">Transcript</button>
+  <button class="nav-btn" onclick="showTab('plan',this)">Semester Plan</button>
+  <button class="nav-btn" onclick="showTab('requirements',this)">Requirements</button>
+  <button class="nav-btn" onclick="showTab('trends',this)">GPA Trend</button>
+  <button class="nav-btn" onclick="showTab('unis',this)">Grad Schools</button>
+</nav>
+
+<!-- SYNC BAR -->
+<div class="sync-bar">
+  <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+    <span style="letter-spacing:.08em;text-transform:uppercase">☁ Cloud Sync:</span>
+    <span class="sync-badge warn" id="sync-status">Checking…</span>
+  </div>
+  <div style="display:flex;gap:6px;flex-wrap:wrap">
+    <button class="sync-btn outline" onclick="loadFromCloud()">↓ Pull from Cloud</button>
+    <button class="sync-btn outline" onclick="saveToCloud()">↑ Push to Cloud</button>
+    <button class="sync-btn" onclick="toggleSyncPanel()">⚙ Setup Sync</button>
+  </div>
+</div>
+
+<!-- SYNC PANEL -->
+<div id="sync-panel">
+  <div class="sync-panel-inner">
+    <div class="sync-steps">
+      <h4>Cloud Sync Setup — JSONBin.io (Free)</h4>
+
+      <div style="margin-bottom:16px;padding:10px;border:1px solid var(--rule);font-size:12px;line-height:1.7;font-family:'Courier Prime',monospace">
+        <strong>Step 1:</strong> Go to <a href="https://jsonbin.io" target="_blank" style="color:var(--accent2)">jsonbin.io</a> → Sign up free →
+        Go to API Keys → Copy your <strong>Master Key</strong><br>
+        <strong>Step 2:</strong> Paste it below and click "Create New Bin" (first device) or "Connect Existing" (other devices)
+      </div>
+
+      <div class="sync-field">
+        <label>JSONBin Master Key (starts with $2b$...)</label>
+        <input type="password" id="api-key-input" placeholder="$2b$10$...your master key...">
+      </div>
+
+      <div id="setup-step2">
+        <div class="sync-row" style="margin-bottom:12px">
+          <button class="sync-btn" onclick="createBin()">✦ Create New Bin (first time)</button>
+          <span style="font-family:'Courier Prime',monospace;font-size:11px;align-self:center;color:var(--muted)">— or —</span>
+        </div>
+        <div class="sync-field">
+          <label>Bin ID (if already created on another device)</label>
+          <input type="text" id="bin-id-input" placeholder="64abc123...">
+        </div>
+        <button class="sync-btn outline" onclick="connectExisting()">Connect Existing Bin</button>
+      </div>
+
+      <div id="setup-done" style="display:none" class="sync-success">
+        <p>✅ <strong>Cloud sync active!</strong><br>
+        Bin ID: <code id="bin-id-display" style="font-family:'Courier Prime',monospace;font-size:11px"></code><br>
+        Copy this Bin ID to set up sync on your other devices (phone, tablet, etc.).<br>
+        Grades auto-save to cloud every time you enter one.</p>
+        <div style="margin-top:10px">
+          <button class="sync-btn outline" onclick="resetSync()" style="font-size:9px">Disconnect</button>
+        </div>
+      </div>
+
+      <p class="sync-note">Your API key is stored only in your browser — never sent anywhere except JSONBin. Free tier allows 10,000 requests/month which is far more than enough.</p>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- ══ TRANSCRIPT ══ -->
+<div class="section active container" id="tab-transcript">
+  <div class="sec-head">
+    <h2>Official Transcript</h2>
+    <span class="byline">Enter grades in gold fields · GPA updates live</span>
+  </div>
+
+  <div class="stats-row" id="stat-row">
+    <div class="stat-cell highlight">
+      <span class="s-label">Cumulative GPA</span>
+      <div class="s-value" id="s-gpa">—</div>
+      <div class="s-sub" id="s-cr">— credits</div>
+    </div>
+    <div class="stat-cell">
+      <span class="s-label">Projected Final</span>
+      <div class="s-value" id="s-proj">—</div>
+      <div class="s-sub">remaining at B+</div>
+    </div>
+    <div class="stat-cell">
+      <span class="s-label">Credits Remaining</span>
+      <div class="s-value" id="s-rem">—</div>
+      <div class="s-sub">to graduation (120)</div>
+    </div>
+    <div class="stat-cell">
+      <span class="s-label">Replacements</span>
+      <div class="s-value">4</div>
+      <div class="s-sub">summers only · +28.8 pts</div>
+    </div>
+    <div class="stat-cell">
+      <span class="s-label">Best Semester</span>
+      <div class="s-value">3.606</div>
+      <div class="s-sub">Spring 2026 🏆</div>
+    </div>
+  </div>
+
+  <div class="alert-rule">
+    <strong>PHYS2170 (Foundations of Modern Physics)</strong> — semester-only course, cannot be repeated. Grade of C- stands permanently. All other C- and D+ grades are scheduled for summer retakes.
+  </div>
+
+  <div class="course-hdr">
+    <span>Term</span><span>Course</span><span>Name</span>
+    <span style="text-align:center">Cr</span>
+    <span style="text-align:center">Grade</span>
+    <span style="text-align:center">Pts</span>
+    <span style="text-align:right">Status</span>
+  </div>
+  <div id="transcript-body"></div>
+</div>
+
+<!-- ══ PLAN ══ -->
+<div class="section container" id="tab-plan">
+  <div class="sec-head">
+    <h2>Semester Plan — FA26 to SP28</h2>
+    <span class="byline">Replacements in summers only · PHYS2170 excluded</span>
+  </div>
+  <div class="sem-grid" id="sem-grid"></div>
+</div>
+
+<!-- ══ REQUIREMENTS ══ -->
+<div class="section container" id="tab-requirements">
+  <div class="sec-head">
+    <h2>Degree Requirements</h2>
+    <span class="byline">BS Physics, Plan II · 120 credits · CU Boulder A&S</span>
+  </div>
+  <div class="req-cols" id="req-grid"></div>
+</div>
+
+<!-- ══ TREND ══ -->
+<div class="section container" id="tab-trends">
+  <div class="sec-head">
+    <h2>GPA Analysis</h2>
+    <span class="byline">Term performance · Projections · Replacement impact</span>
+  </div>
+  <div class="chart-box">
+    <h3>Term GPA by Semester</h3>
+    <p>Completed semesters — upward trend dominant from FA25 onward · Target: 3.3</p>
+    <div class="bar-chart" id="bar-chart"></div>
+  </div>
+  <div class="chart-box">
+    <h3>Final GPA Projections</h3>
+    <p>With all 4 grade replacements applied · PHYS2170 stays C-</p>
+    <div id="proj-rows"></div>
+  </div>
+  <div class="chart-box">
+    <h3>Replacement Schedule & Impact</h3>
+    <p>Summers 2027 & Spring 2028 · +28.8 quality points total</p>
+    <div id="rep-table"></div>
+  </div>
+</div>
+
+<!-- ══ UNIS ══ -->
+<div class="section container" id="tab-unis">
+  <div class="sec-head">
+    <h2>Graduate School Targets</h2>
+    <span class="byline">MSc Medical Physics · Two Holy Mosques Scholarship · English-speaking</span>
+  </div>
+  <div id="uni-body"></div>
+</div>
+
+<footer class="container">
+  THE ACADEMIC RECORD · Mohammed Alhazmi · CU Boulder · Physics, Interdisciplinary · Expected Graduation Spring 2028<br>
+  Open in any browser · No installation required · Grades saved locally
+</footer>
+
+<script>
+// ══════════════════════════════════════════════════════════════════
+// DATA
+// ══════════════════════════════════════════════════════════════════
+const GP={'A':4,'A-':3.7,'B+':3.3,'B':3,'B-':2.7,'C+':2.3,'C':2,'C-':1.7,'D+':1.3,'D':1,'D-':0.7,'F':0};
+function gp(g){return g&&g.trim()&&GP[g.trim()]!==undefined?GP[g.trim()]:null;}
+
+// [term, code, name, cr, grade, status]
+// status: counted|replaced|inprog|planned|toreplace|cantrepeat
+const COURSES=[
+  ['FA23','GRMN2301','Inside Nazi Germany',3,'C','counted'],
+  ['FA23','MATH1300','Calculus 1 (old)',0,'D','replaced'],
+  ['FA23','MATH1301','Calc 1 Supplemental Lab',1,'A-','counted'],
+  ['FA23','PHYS1115','Gen Physics 1 for Majors (old)',0,'D-','replaced'],
+  ['SP24','CSCI1300','CS 1: Starting Computing',4,'B','counted'],
+  ['SP24','MATH1300','Calculus 1 (retake)',5,'C+','counted'],
+  ['SP24','PHYS1110','General Physics 1 (retake)',4,'C-','toreplace'],
+  ['SP24','WRTG1150','1st Year Writing/Rhetoric',3,'B','counted'],
+  ['FA24','CHEM1113','Gen Chemistry 1 (old)',0,'D','replaced'],
+  ['FA24','CHEM1114','Laboratory Gen Chem 1',1,'D+','counted'],
+  ['FA24','MATH2300','Calculus 2 (old)',0,'D+','replaced'],
+  ['FA24','PHYS1120','General Physics 2 (old)',0,'D-','replaced'],
+  ['FA24','PHYS1140','Experimental Physics 1',1,'C+','counted'],
+  ['SP25','ASTR1000','The Solar System',3,'B-','counted'],
+  ['SP25','CSCI2270','Comp Sci 2: Data Structures',4,'D+','toreplace'],
+  ['SP25','MATH2300','Calculus 2 (retake)',5,'C-','toreplace'],
+  ['SP25','PHYS1120','General Physics 2 (retake)',4,'C-','toreplace'],
+  ['SU25','MATH2130','Linear Algebra for Non-Math Mjrs',3,'B-','counted'],
+  ['SU25','PSYC1001','General Psychology',3,'A','counted'],
+  ['FA25','MATH2400','Calculus 3 (old)',0,'F','replaced'],
+  ['FA25','MCDB1150','Intro Cellular & Molecular Bio',3,'C+','counted'],
+  ['FA25','MUEL3892','Music and Space',3,'A','counted'],
+  ['FA25','PHYS2150','Experimental Physics 2',1,'B-','counted'],
+  ['FA25','PHYS2170','Foundations of Modern Physics',3,'C-','cantrepeat'],
+  ['FA25','PHYS2600','Scientific Computing',3,'A','counted'],
+  ['SP26','CHEM1113','Gen Chemistry 1 (retake)',4,'B+','counted'],
+  ['SP26','INFO1701','Programming for Info Sci 1',4,'A','counted'],
+  ['SP26','MATH2400','Calculus 3 (retake)',5,'B+','counted'],
+  ['SP26','MUEL3642','History of Jazz',3,'A','counted'],
+  ['SU26','ANTH1170','Culture, Gender, Film',3,'A','inprog'],
+  ['SU26','ARAB2320','Muslim World, 600–1250',3,'A','inprog'],
+  ['SU26','ETHN2013','Critical Issues/Native N.A.',3,'A','inprog'],
+  ['SU26','MATH3430','Ordinary Differential Equations',3,'A','inprog'],
+  ['FA26','PHYS2210','Class Mech & Math Methods 1',3,'','planned'],
+  ['FA26','PHYS3330','Electronics & Physical Sciences',3,'','planned'],
+  ['FA26','PHYS3210','Classical Mechanics',3,'','planned'],
+  ['FA26','RLST2600','Judaism, Christianity & Islam',3,'','planned'],
+  ['SP27','PHYS3220','Electrodynamics',3,'','planned'],
+  ['SP27','PHYS3310','Quantum Mechanics 1',3,'','planned'],
+  ['SP27','PHYS4230','Upper Division Physics',3,'','planned'],
+  ['SP27','INTER1','Interdisciplinary Course 1',3,'','planned'],
+  ['SU27','PHYS1110R','PHYS1110 Retake (C-→B+)',4,'','planned'],
+  ['SU27','MATH2300R','MATH2300 Retake (C-→B+)',5,'','planned'],
+  ['SU27','CSCI2270R','CSCI2270 Retake (D+→B+)',4,'','planned'],
+  ['FA27','PHYS3320','Quantum Mechanics 2',3,'','planned'],
+  ['FA27','INTER2','Interdisciplinary Course 2',3,'','planned'],
+  ['FA27','INTER3','Interdisciplinary Course 3',3,'','planned'],
+  ['SP28','PHYS1120R','PHYS1120 Retake (C-→B+)',4,'','planned'],
+  ['SP28','INTER4','Interdisciplinary Course 4',3,'','planned'],
+  ['SP28','ELEC1','Elective / Ancillary',3,'','planned'],
+];
+
+// replacements: retake key → old key being replaced
+const REPLACES={
+  'SU27:PHYS1110R':'SP24:PHYS1110',
+  'SU27:MATH2300R':'SP25:MATH2300',
+  'SU27:CSCI2270R':'SP25:CSCI2270',
+  'SP28:PHYS1120R':'SP25:PHYS1120',
+};
+
+let userGrades={};
+try{userGrades=JSON.parse(localStorage.getItem('mh_acad_grades')||'{}');}catch(e){}
+function save(){try{localStorage.setItem('mh_acad_grades',JSON.stringify(userGrades));}catch(e){}}
+function getGrade(term,code,def){const k=`${term}:${code}`;return userGrades[k]!==undefined?userGrades[k]:def;}
+
+const TERM_LABELS={
+  FA23:'Fall 2023',SP24:'Spring 2024',FA24:'Fall 2024',
+  SP25:'Spring 2025',SU25:'Summer 2025',FA25:'Fall 2025',
+  SP26:'Spring 2026',SU26:'Summer 2026',FA26:'Fall 2026',
+  SP27:'Spring 2027',SU27:'Summer 2027',FA27:'Fall 2027',SP28:'Spring 2028'
+};
+
+// ── GPA COMPUTATION ──
+function computeGPA(){
+  const replacedByCompleted=new Set();
+  Object.entries(REPLACES).forEach(([repKey,oldKey])=>{
+    const c=COURSES.find(x=>`${x[0]}:${x[1]}`===repKey);
+    if(c){const g=getGrade(c[0],c[1],c[4]);if(gp(g)!==null)replacedByCompleted.add(oldKey);}
+  });
+  let cr=0,pts=0;
+  COURSES.forEach(c=>{
+    const[term,code,name,crv,def,status]=c;
+    if(status==='replaced'||crv===0)return;
+    const k=`${term}:${code}`;
+    if(status==='toreplace'&&replacedByCompleted.has(k))return;
+    const g=getGrade(term,code,def);
+    const p=gp(g);
+    if(p===null)return;
+    cr+=crv; pts+=crv*p;
+  });
+  return{gpa:cr>0?pts/cr:0,cr,pts};
+}
+
+function computeTermGPA(term){
+  const replacedByCompleted=new Set();
+  Object.entries(REPLACES).forEach(([repKey,oldKey])=>{
+    const c=COURSES.find(x=>`${x[0]}:${x[1]}`===repKey);
+    if(c){const g=getGrade(c[0],c[1],c[4]);if(gp(g)!==null)replacedByCompleted.add(oldKey);}
+  });
+  let cr=0,pts=0;
+  COURSES.filter(c=>c[0]===term).forEach(c=>{
+    const[t,code,name,crv,def,status]=c;
+    if(status==='replaced'||crv===0)return;
+    const k=`${t}:${code}`;
+    if(status==='toreplace'&&replacedByCompleted.has(k))return;
+    const g=getGrade(t,code,def);
+    const p=gp(g);
+    if(p===null)return;
+    cr+=crv; pts+=crv*p;
+  });
+  return{gpa:cr>0?pts/cr:null,cr};
+}
+
+function updateDash(){
+  const{gpa,cr}=computeGPA();
+  const g=cr>0?gpa.toFixed(3):'—';
+  document.getElementById('s-gpa').textContent=g;
+  document.getElementById('s-cr').textContent=cr>0?`${cr} credits counted`:'—';
+  document.getElementById('tk-gpa').textContent=g;
+  document.getElementById('tk-cr').textContent=cr>0?`${cr} cr`:'—';
+
+  // Projected
+  let pCr=cr,pPts=gpa*cr;
+  COURSES.forEach(c=>{
+    if(c[5]==='planned'&&!gp(getGrade(c[0],c[1],c[4]))){pCr+=c[3];pPts+=c[3]*3.3;}
+  });
+  const proj=pCr>0?(pPts/pCr).toFixed(3):'—';
+  document.getElementById('s-proj').textContent=proj;
+  document.getElementById('tk-proj').textContent=proj;
+
+  const rem=Math.max(0,120-cr);
+  document.getElementById('s-rem').textContent=rem;
+  document.getElementById('tk-rem').textContent=`${rem} cr`;
+}
+
+// ── TRANSCRIPT ──
+function buildTranscript(){
+  const body=document.getElementById('transcript-body');
+  body.innerHTML='';
+  let prevTerm='',alt=0;
+  const terms=[...new Set(COURSES.map(c=>c[0]))];
+
+  terms.forEach(term=>{
+    const termCourses=COURSES.filter(c=>c[0]===term);
+    const{gpa,cr}=computeTermGPA(term);
+
+    // Term header
+    const th=document.createElement('div');
+    th.className='term-head';
+    const isBest=term==='SP26';
+    const isGrad=term==='SP28';
+    const isRep=term==='SU27';
+    th.style.cssText=isGrad?'background:#1a1208':isRep?'background:#1a2c1a':isBest?'background:#1a2b4a':'';
+    th.innerHTML=`
+      <span>${TERM_LABELS[term]||term}${isBest?' 🏆':isGrad?' 🎓':isRep?' 🔄':''}</span>
+      <span class="th-cr">${cr>0?cr+' credits':''}</span>
+      <span class="th-cr">${gpa!==null?'Term GPA:':''}</span>
+      <span class="th-gpa">${gpa!==null?gpa.toFixed(3):cr>0?'—':''}</span>`;
+    body.appendChild(th);
+
+    // Course rows
+    alt=0;
+    termCourses.forEach(([t,code,name,crv,def,status])=>{
+      const grade=getGrade(t,code,def);
+      const pts=gp(grade);
+      const tr=document.createElement('div');
+      tr.className=`course-row${alt%2===1?' alt':''}`;
+      alt++;
+
+      const badgeHTML={
+        counted:`<span class="badge b-counted">Counted</span>`,
+        replaced:`<span class="badge b-replaced">Replaced</span>`,
+        inprog:`<span class="badge b-inprog">In Progress</span>`,
+        planned:`<span class="badge b-planned">Planned</span>`,
+        toreplace:`<span class="badge b-replace">To Replace</span>`,
+        cantrepeat:`<span class="badge b-cantrepeat">Cannot Repeat</span>`,
+      }[status]||'';
+
+      const isReplaced=status==='replaced';
+      const isEditable=status==='planned'||status==='inprog';
+      const gradeColor=pts>=3.3?'grade-hi':pts>=2.7?'':pts>=2?'grade-mid':'grade-lo';
+
+      let gradeCell;
+      if(isReplaced){
+        gradeCell=`<span style="font-family:'Courier Prime',monospace;font-size:12px;color:var(--accent);text-decoration:line-through">${grade}</span>`;
+      } else if(isEditable){
+        gradeCell=`<input class="grade-input${grade?' filled':''}" data-term="${t}" data-code="${code}" value="${grade}" placeholder="A" maxlength="3">`;
+      } else {
+        gradeCell=`<span class="col-grade ${gradeColor}">${grade||'—'}</span>`;
+      }
+
+      tr.innerHTML=`
+        <span class="col-term">${t}</span>
+        <span class="col-code">${code}</span>
+        <span class="col-name">${name}</span>
+        <span class="col-cr">${crv||'—'}</span>
+        <span>${gradeCell}</span>
+        <span class="col-pts">${isReplaced||!grade?'—':pts!==null?pts.toFixed(1):'?'}</span>
+        <span class="col-status">${badgeHTML}</span>`;
+      body.appendChild(tr);
+    });
+
+    // Term summary footer
+    const sf=document.createElement('div');
+    sf.className='term-summary';
+    sf.innerHTML=`
+      <span>Credits: <strong>${cr}</strong></span>
+      <span>Term GPA: <strong>${gpa!==null?gpa.toFixed(3):'(enter grades)'}</strong></span>`;
+    body.appendChild(sf);
+  });
+
+  // Input listeners
+  document.querySelectorAll('.grade-input').forEach(inp=>{
+    inp.addEventListener('input',e=>{
+      const{term,code}=e.target.dataset;
+      userGrades[`${term}:${code}`]=e.target.value.trim().toUpperCase();
+      save();
+      e.target.classList.toggle('filled',gp(e.target.value)!==null);
+      updateDash();
+      // Refresh term summaries
+      buildTranscript();
+    });
+  });
+}
+
+// ── SEMESTER PLAN ──
+function buildSemPlan(){
+  const grid=document.getElementById('sem-grid');
+  grid.innerHTML='';
+  const CRMap={'PHYS1110R':4,'PHYS1120R':4,'MATH2300R':5,'CSCI2270R':4};
+
+  const semesters=[
+    {term:'SU26',label:'Summer 2026',headCls:'',note:'In Progress · 12 cr',
+     courses:[['ANTH1170','Culture, Gender, Film','A','Gen Ed'],['ARAB2320','Muslim World, 600–1250','A','Gen Ed'],['ETHN2013','Critical Issues / Native N.A.','A','Gen Ed'],['MATH3430','Ordinary Differential Eq.','A','Ancillary']]},
+    {term:'FA26',label:'Fall 2026',headCls:'',note:'Planned · 12 cr',
+     courses:[['PHYS2210','Class Mech & Math Methods 1','A','Physics'],['PHYS3330','Electronics & Physical Sciences','A','Physics'],['PHYS3210','Classical Mechanics','B+','Physics'],['RLST2600','Judaism, Christianity & Islam','A','Gen Ed']]},
+    {term:'SP27',label:'Spring 2027',headCls:'',note:'Planned · 12 cr',
+     courses:[['PHYS3220','Electrodynamics','B+','Physics'],['PHYS3310','Quantum Mechanics 1','B+','Physics'],['PHYS4230','Upper Division Physics','B+','Physics'],['INTER1','Interdisciplinary Course 1','A-','Interdisciplinary']]},
+    {term:'SU27',label:'Summer 2027 🔄',headCls:'sem-rep-head',note:'Replacements · 13 cr',
+     courses:[['PHYS1110R','PHYS1110 Retake (C-→B+)','B+','Replace 4cr'],['MATH2300R','MATH2300 Retake (C-→B+)','B+','Replace 5cr'],['CSCI2270R','CSCI2270 Retake (D+→B+)','B+','Replace 4cr']]},
+    {term:'FA27',label:'Fall 2027',headCls:'',note:'Planned · 9 cr',
+     courses:[['PHYS3320','Quantum Mechanics 2','B+','Physics'],['INTER2','Interdisciplinary Course 2','A-','Interdisciplinary'],['INTER3','Interdisciplinary Course 3','A-','Interdisciplinary']]},
+    {term:'SP28',label:'Spring 2028 🎓',headCls:'sem-grad-head',note:'Graduation · 10 cr',
+     courses:[['PHYS1120R','PHYS1120 Retake (C-→B+)','B+','Replace 4cr'],['INTER4','Interdisciplinary Course 4','A-','Interdisciplinary'],['ELEC1','Elective / Ancillary','A-','Elective']]},
+  ];
+
+  semesters.forEach(sem=>{
+    const cr=sem.courses.reduce((s,c)=>s+(CRMap[c[0]]||3),0);
+    const pts=sem.courses.reduce((s,c)=>s+(CRMap[c[0]]||3)*(gp(c[2])||0),0);
+    const termGPA=cr>0?(pts/cr).toFixed(3):'—';
+
+    const card=document.createElement('div');
+    card.className='sem-card';
+    card.innerHTML=`
+      <div class="sem-card-head ${sem.headCls}">
+        <h3>${sem.label}</h3>
+        <div class="sc-meta">${sem.note}<br>Proj. GPA: <strong>${termGPA}</strong></div>
+      </div>
+      <div class="sem-body">
+        ${sem.courses.map(c=>`
+          <div class="sem-row">
+            <span class="sr-name">${c[1]}</span>
+            <span class="sr-cat">${c[3]}</span>
+            <span class="sr-grade" style="color:${gp(c[2])>=3.3?'var(--green)':gp(c[2])>=2.7?'var(--accent2)':'var(--muted)'}">${c[2]}</span>
+          </div>`).join('')}
+      </div>
+      <div class="sem-footer">
+        <span>${cr} credits</span>
+        <span class="sf-gpa">Proj. Term GPA: ${termGPA}</span>
+      </div>`;
+    grid.appendChild(card);
+  });
+}
+
+// ── REQUIREMENTS (matched to audit) ──
+function buildRequirements(){
+  const grid=document.getElementById('req-grid');
+  grid.innerHTML='';
+
+  const reqs=[
+    // Based on audit: BS Physics Plan II Required Courses
+    {
+      title:'Required Physics Courses',
+      subtitle:'BS Physics Plan II · All must be C- or better',
+      color:'#1a2b4a',total_cr:27,
+      items:[
+        {name:'PHYS1110 General Physics 1',cr:4,grade:'C-',done:true,replace:true,note:'→ Retake SU27'},
+        {name:'PHYS1120 General Physics 2',cr:4,grade:'C-',done:true,replace:true,note:'→ Retake SP28'},
+        {name:'PHYS1140 Experimental Physics 1',cr:1,grade:'C+',done:true},
+        {name:'PHYS2150 Experimental Physics 2',cr:1,grade:'B-',done:true},
+        {name:'PHYS2170 Foundations Mod Physics',cr:3,grade:'C-',done:true,cantRepeat:true,note:'Cannot repeat'},
+        {name:'PHYS2600 Scientific Computing',cr:3,grade:'A',done:true},
+        {name:'PHYS2210 Class Mech & Math Meth 1',cr:3,grade:'',plan:true},
+        {name:'PHYS3210 Classical Mechanics',cr:3,grade:'',plan:true},
+        {name:'PHYS3220 Electrodynamics',cr:3,grade:'',plan:true},
+        {name:'PHYS3310 Quantum Mechanics 1',cr:3,grade:'',plan:true},
+        {name:'PHYS3320 Quantum Mechanics 2',cr:3,grade:'',plan:true},
+        {name:'PHYS3330 Electronics Physical Sciences',cr:3,grade:'',plan:true},
+        {name:'PHYS4230 Upper Division Physics',cr:3,grade:'',plan:true},
+      ]
+    },
+    {
+      title:'BS Physics Ancillary Courses',
+      subtitle:'Required support courses · C- or better',
+      color:'#1a4a2a',total_cr:23,
+      items:[
+        {name:'MATH1300 Calculus 1',cr:5,grade:'C+',done:true},
+        {name:'MATH2300 Calculus 2',cr:5,grade:'C-',done:true,replace:true,note:'→ Retake SU27'},
+        {name:'MATH2400 Calculus 3',cr:5,grade:'B+',done:true},
+        {name:'MATH2130 Linear Algebra',cr:3,grade:'B-',done:true},
+        {name:'MATH3430 Ordinary Differential Eq.',cr:3,grade:'A',prog:true},
+        {name:'CHEM1113 General Chemistry 1',cr:4,grade:'B+',done:true},
+        {name:'CSCI1300 CS 1: Starting Computing',cr:4,grade:'B',done:true},
+      ]
+    },
+    {
+      title:'Interdisciplinary Area (Plan II)',
+      subtitle:'12 credits from chosen track · C- or better',
+      color:'#4a1a6a',total_cr:12,
+      items:[
+        {name:'Interdisciplinary Course 1',cr:3,grade:'',plan:true},
+        {name:'Interdisciplinary Course 2',cr:3,grade:'',plan:true},
+        {name:'Interdisciplinary Course 3',cr:3,grade:'',plan:true},
+        {name:'Interdisciplinary Course 4',cr:3,grade:'',plan:true},
+      ]
+    },
+    {
+      title:'A&S General Education Skills',
+      subtitle:'QRMS · Written Communication lower & upper',
+      color:'#5c1a00',total_cr:11,
+      items:[
+        {name:'MATH1300 Calculus 1 (QRMS)',cr:5,grade:'C+',done:true,note:'Matched as APPM1350'},
+        {name:'WRTG1150 1st Yr Writing (lower div)',cr:3,grade:'B',done:true},
+        {name:'Upper-Division Writing (3000+)',cr:3,grade:'',plan:true,note:'Select from approved list'},
+      ]
+    },
+    {
+      title:'A&S Distribution — Arts & Humanities',
+      subtitle:'12 semester hours · D- or better',
+      color:'#4a3a00',total_cr:12,
+      items:[
+        {name:'GRMN2301 Inside Nazi Germany',cr:3,grade:'C',done:true},
+        {name:'MUEL3892 Music and Space',cr:3,grade:'A',done:true},
+        {name:'MUEL3642 History of Jazz',cr:3,grade:'A',done:true},
+        {name:'RLST2600 Judaism, Christianity & Islam',cr:3,grade:'',plan:true},
+      ]
+    },
+    {
+      title:'A&S Distribution — Natural Sciences',
+      subtitle:'12 semester hours · D- or better',
+      color:'#1a4a1a',total_cr:12,
+      items:[
+        {name:'PHYS1110 General Physics 1',cr:4,grade:'C-',done:true},
+        {name:'CHEM1114 Laboratory Gen Chem 1',cr:1,grade:'D+',done:true},
+        {name:'ASTR1000 The Solar System',cr:3,grade:'B-',done:true},
+        {name:'PHYS1120 General Physics 2',cr:4,grade:'C-',done:true},
+      ]
+    },
+    {
+      title:'A&S Distribution — Social Sciences',
+      subtitle:'12 semester hours · D- or better · 0 added',
+      color:'#3a1a00',total_cr:12,
+      items:[
+        {name:'ANTH1170 Culture, Gender, Film',cr:3,grade:'A',prog:true},
+        {name:'ETHN2013 Critical Issues/Native N.A.',cr:3,grade:'A',prog:true},
+        {name:'Additional Social Science courses needed',cr:6,grade:'',plan:true,note:'4 more credits needed'},
+      ]
+    },
+    {
+      title:'A&S Diversity Requirements',
+      subtitle:'U.S. Perspective 3cr · Global Perspective 3cr',
+      color:'#1a3a4a',total_cr:6,
+      items:[
+        {name:'ETHN2013 Critical Issues (US Perspective)',cr:3,grade:'A',prog:true},
+        {name:'ANTH1170 Culture, Gender, Film (Global)',cr:3,grade:'A',prog:true},
+      ]
+    },
+    {
+      title:'A&S NS Lab Requirement',
+      subtitle:'Natural Sciences Lab · D- or better',
+      color:'#1a1a4a',total_cr:1,
+      items:[
+        {name:'CHEM1114 Laboratory Gen Chem 1',cr:1,grade:'D+',done:true,note:'Satisfied ✓'},
+      ]
+    },
+    {
+      title:'Electives & Other',
+      subtitle:'54+ credits outside PHYS · various requirements',
+      color:'#3a3a3a',total_cr:15,
+      items:[
+        {name:'PSYC1001 General Psychology',cr:3,grade:'A',done:true},
+        {name:'MCDB1150 Intro Cellular & Molecular Bio',cr:3,grade:'C+',done:true},
+        {name:'CSCI2270 Data Structures',cr:4,grade:'D+',done:true,replace:true,note:'→ Retake SU27'},
+        {name:'INFO1701 Programming for Info Sci 1',cr:4,grade:'A',done:true},
+        {name:'ARAB2320 Muslim World, 600–1250',cr:3,grade:'A',prog:true},
+        {name:'Elective / Ancillary',cr:3,grade:'',plan:true},
+      ]
+    },
+  ];
+
+  reqs.forEach(req=>{
+    const done=req.items.filter(i=>i.done||i.prog).length;
+    const total=req.items.length;
+    const pct=Math.round(done/total*100);
+    const earnedCr=req.items.filter(i=>i.done||i.prog).reduce((s,i)=>s+i.cr,0);
+
+    const card=document.createElement('div');
+    card.className='req-block';
+    card.innerHTML=`
+      <div class="req-block-head" style="background:${req.color}">
+        <h3>${req.title}</h3>
+        <span class="rh-pct">${pct}% · ${earnedCr}/${req.total_cr} cr</span>
+      </div>
+      <div class="req-progress"><div class="req-progress-fill" style="width:${pct}%;background:rgba(245,240,232,.7)"></div></div>
+      <div class="req-body">
+        ${req.items.map(item=>{
+          const dc=item.done?'dot-done':item.prog?'dot-prog':item.replace?'dot-rep':item.cantRepeat?'dot-no':'dot-plan';
+          const gc=item.grade?gp(item.grade)>=3.3?'grade-hi':gp(item.grade)>=2.7?'':'grade-mid':'';
+          const tag=item.cantRepeat?'<span class="rr-tag"> ⚠ cannot repeat</span>':
+                    item.replace?'<span class="rr-tag"> 🔄 scheduled</span>':
+                    item.prog?'<span class="rr-tag"> in progress</span>':
+                    item.plan?'<span class="rr-tag"> planned</span>':'';
+          const noteHtml=item.note?`<span class="rr-tag"> · ${item.note}</span>`:'';
+          return `<div class="req-row">
+            <div class="req-dot ${dc}"></div>
+            <span class="rr-name">${item.name}${tag}${noteHtml}</span>
+            <span class="rr-grade ${gc}">${item.grade||''}</span>
+          </div>`;
+        }).join('')}
+      </div>
+      <div class="req-footer">
+        <span>${req.subtitle}</span>
+        <span>${done}/${total} courses</span>
+      </div>`;
+    grid.appendChild(card);
+  });
+}
+
+// ── GPA TREND ──
+function buildTrend(){
+  // Bar chart
+  const chart=document.getElementById('bar-chart');
+  chart.innerHTML='';
+  const data=[
+    {t:'FA23',gpa:2.425},{t:'SP24',gpa:2.456},{t:'FA24',gpa:1.300},
+    {t:'SP25',gpa:1.788},{t:'SU25',gpa:3.350},{t:'FA25',gpa:2.150},
+    {t:'SP26',gpa:3.606},{t:'SU26',gpa:4.000},
+  ];
+  const maxG=4,H=110,target=3.3;
+
+  // Target line
+  const tl=document.createElement('div');
+  tl.className='target-line';
+  tl.style.bottom=`${(target/maxG)*H}px`;
+  tl.innerHTML=`<span class="target-label">3.3 target</span>`;
+  chart.appendChild(tl);
+
+  data.forEach(d=>{
+    const color=d.gpa>=3.3?'var(--green)':d.gpa>=2.5?'var(--amber)':'var(--accent)';
+    const h=(d.gpa/maxG)*H;
+    const wrap=document.createElement('div');
+    wrap.className='bar-wrap';
+    wrap.innerHTML=`
+      <div class="bar" style="height:${h}px;background:${color}" title="${d.gpa.toFixed(3)}">
+        <span class="bar-val">${d.gpa.toFixed(2)}</span>
+      </div>
+      <div class="bar-label">${d.t}</div>`;
+    chart.appendChild(wrap);
+  });
+
+  // Projection rows
+  const projDiv=document.getElementById('proj-rows');
+  const projs=[
+    {l:'Realistic — remaining B+',gpa:3.276,c:'var(--accent2)'},
+    {l:'Mixed — PHYS B+, others A-',gpa:3.350,c:'var(--green)'},
+    {l:'Optimistic — remaining A-',gpa:3.368,c:'var(--green)'},
+    {l:'Best case — remaining all A',gpa:3.437,c:'var(--green)'},
+    {l:'Without replacements (baseline)',gpa:3.041,c:'var(--accent)'},
+  ];
+  projDiv.innerHTML=projs.map(p=>`
+    <div class="proj-row">
+      <span class="proj-label">${p.l}</span>
+      <div class="proj-bar-wrap"><div class="proj-bar-fill" style="width:${(p.gpa/4)*100}%;background:${p.c}"></div></div>
+      <span class="proj-val" style="color:${p.c}">${p.gpa.toFixed(3)}</span>
+    </div>`).join('');
+
+  // Replacement table
+  const repDiv=document.getElementById('rep-table');
+  const reps=[
+    ['MATH2300 — SU27',5,'C-','B+','+8.0 pts'],
+    ['CSCI2270 — SU27',4,'D+','B+','+8.0 pts'],
+    ['PHYS1110 — SU27',4,'C-','B+','+6.4 pts'],
+    ['PHYS1120 — SP28',4,'C-','B+','+6.4 pts'],
+    ['PHYS2170 — Cannot repeat',3,'C-','❌','0 pts'],
+  ];
+  repDiv.innerHTML=`
+    <table style="width:100%;border-collapse:collapse;font-family:'Courier Prime',monospace;font-size:12px">
+      <tr style="border-bottom:1px solid var(--ink)">
+        ${['Course','Credits','Old','New','Impact'].map(h=>`<th style="padding:5px 8px;text-align:left;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)">${h}</th>`).join('')}
+      </tr>
+      ${reps.map((r,i)=>`<tr style="border-bottom:1px solid var(--rule);background:${i%2?'var(--paper2)':''}">
+        ${r.map((v,j)=>`<td style="padding:6px 8px;color:${j===4?'var(--green)':j===2?'var(--accent)':'var(--ink)'};font-weight:${j===4?700:400}">${v}</td>`).join('')}
+      </tr>`).join('')}
+      <tr style="border-top:2px solid var(--ink);font-weight:700">
+        <td style="padding:7px 8px">TOTAL</td><td style="padding:7px 8px">20</td><td></td><td></td>
+        <td style="padding:7px 8px;color:var(--green)">+28.8 pts</td>
+      </tr>
+    </table>`;
+}
+
+// ── UNIVERSITIES ──
+function buildUnis(){
+  const body=document.getElementById('uni-body');
+
+  // GPA note: Your projected final GPA ranges from 3.28 (realistic) to 3.44 (best case)
+  // Categories based on min GPA vs your projected range
+  // Safety = min GPA ≤ 2.7 (well within reach)
+  // Strong Target = min GPA 2.8-3.2 (comfortable)
+  // Target = min GPA 3.3 (achievable with your trend)
+  // Reach = min GPA 3.5+ (need best case scenario)
+  // Dream = elite programs, very competitive
+
+  const tiers=[
+    {
+      label:'🟢 Safety — Min GPA well below your projected 3.28+',
+      desc:'These programs have GPA requirements you will comfortably exceed',
+      unis:[
+        {name:'University of Aberdeen',loc:'🇬🇧 Scotland, UK',gpa:'2.4',acc:'IPEM',schol:'✅',chips:['Safety ✅','2:2 Equivalent','IPEM Accredited','Jan & Sep Intake'],cc:['chip-safe','chip-gpa','chip-gpa','chip-good'],accent:'uni-accent-green',notes:'Lowest GPA bar among top Medical Physics programs. IPEM accredited (NHS clinical pathway). January and September intakes give you flexibility. Holistic review for international students.'},
+        {name:'University of Surrey',loc:'🇬🇧 England, UK',gpa:'2.4',acc:'IPEM',schol:'✅',chips:['Safety ✅','2:2 Equivalent','IPEM Accredited','Work Exp Considered'],cc:['chip-safe','chip-gpa','chip-gpa','chip-good'],accent:'uni-accent-green',notes:'Trained 1,000+ medical physicists. IPEM accredited. Notably considers relevant work experience if GPA requirements are not fully met. Strong NHS links.'},
+        {name:'Swansea University',loc:'🇬🇧 Wales, UK',gpa:'2.4',acc:'IPEM',schol:'✅',chips:['Safety ✅','2:2 Equivalent','IPEM Accredited','Interview Route'],cc:['chip-safe','chip-gpa','chip-gpa','chip-good'],accent:'uni-accent-green',notes:'100% internationally excellent research (REF2021). IPEM accredited. Strong NHS Wales and proton therapy connections. Will interview lower GPA applicants.'},
+      ]
+    },
+    {
+      label:'🎯 Strong Target — Min GPA 3.0 (your last-60-cr GPA will exceed this)',
+      desc:'Very achievable — your last 2 years of performance puts you here comfortably',
+      unis:[
+        {name:'University of Alberta',loc:'🇨🇦 Edmonton, Canada',gpa:'3.3*',acc:'CAMPEP',schol:'✅',chips:['Strong ✅','Last 2 Years Only','CAMPEP Accredited','NHS-equivalent Training'],cc:['chip-safe','chip-good','chip-gpa','chip-gpa'],accent:'uni-accent-green',notes:'Reviews GPA of LAST 2 YEARS only — your biggest advantage. SP25→SP28 GPA is your pitch. CAMPEP accredited for clinical residency eligibility in North America.'},
+        {name:'UBC Vancouver',loc:'🇨🇦 Vancouver, Canada',gpa:'3.0',acc:'CAMPEP',schol:'✅',chips:['Strong ✅','Min 3.0','CAMPEP Accredited','Holistic'],cc:['chip-safe','chip-gpa','chip-gpa','chip-good'],accent:'uni-accent-green',notes:'CAMPEP accredited. Holistic international review. One of Canada\'s top universities. Partnership with BC Cancer Agency for clinical training.'},
+        {name:'University of Florida',loc:'🇺🇸 Gainesville, USA',gpa:'3.0',acc:'CAMPEP',schol:'✅',chips:['Strong ✅','Min 3.0','CAMPEP Accredited','No TOEFL Needed'],cc:['chip-safe','chip-gpa','chip-gpa','chip-good'],accent:'uni-accent-green',notes:'CAMPEP accredited MSc & PhD. No TOEFL needed (CU Boulder degree). Strong radiation oncology clinical connections. Research-focused program.'},
+        {name:'University of Kentucky',loc:'🇺🇸 Lexington, USA',gpa:'3.0',acc:'CAMPEP',schol:'✅',chips:['Strong ✅','Min 3.0','CAMPEP Accredited','No TOEFL Needed'],cc:['chip-safe','chip-gpa','chip-gpa','chip-good'],accent:'uni-accent-green',notes:'CAMPEP accredited MS & PhD. Markey Cancer Center affiliation. No TOEFL needed (CU Boulder degree). Competitive stipends for PhD students.'},
+        {name:'University of Wisconsin–Madison',loc:'🇺🇸 Madison, USA',gpa:'3.0*',acc:'CAMPEP',schol:'✅',chips:['Strong ✅','Last 60 Cr: 3.0','CAMPEP Accredited','No TOEFL Needed','#1 US Program'],cc:['chip-safe','chip-good','chip-gpa','chip-gpa','chip-good'],accent:'uni-accent-green',notes:'First medical physics dept in the USA. Requires 3.0 on LAST 60 CREDIT HOURS — your trajectory is very competitive. No TOEFL (CU Boulder degree). Apply for MS (self-funded), not PhD.'},
+        {name:'University of Wollongong',loc:'🇦🇺 NSW, Australia',gpa:'3.0',acc:'CAMPEP',schol:'✅',chips:['Strong ✅','Min 3.0','CAMPEP Accredited','Only CAMPEP in AUS'],cc:['chip-safe','chip-gpa','chip-gpa','chip-good'],accent:'uni-accent-green',notes:'Only CAMPEP-accredited Medical Physics MSc in Australia. Strong medical radiation physics research. Scholarship compatible.'},
+        {name:'McMaster University',loc:'🇨🇦 Hamilton, Canada',gpa:'3.0',acc:'CAMPEP',schol:'✅',chips:['Strong ✅','Min 3.0','CAMPEP Accredited'],cc:['chip-safe','chip-gpa','chip-gpa'],accent:'uni-accent-green',notes:'CAMPEP accredited. Department of Physics and Astronomy. Graduating students receive CAMPEP attestation letter for residency eligibility. Strong research environment.'},
+        {name:'Western University',loc:'🇨🇦 London, Canada',gpa:'3.0',acc:'CAMPEP',schol:'✅',chips:['Strong ✅','Min 3.0','CAMPEP Accredited','1-Year Option'],cc:['chip-safe','chip-gpa','chip-gpa','chip-good'],accent:'uni-accent-green',notes:'CAMPEP accredited MSc in Clinical Medical Biophysics. Unique 1-year MSc option for those with related graduate degree. Strong radiation therapy physics focus.'},
+        {name:'University of Victoria',loc:'🇨🇦 Victoria, Canada',gpa:'3.0',acc:'CAMPEP',schol:'✅',chips:['Strong ✅','Min 3.0','CAMPEP Accredited','BC Cancer Agency'],cc:['chip-safe','chip-gpa','chip-gpa','chip-good'],accent:'uni-accent-green',notes:'CAMPEP accredited in partnership with BC Cancer Agency Vancouver Island. Smaller program = more individual attention. Beautiful Pacific coast location.'},
+      ]
+    },
+    {
+      label:'⚠️ Target — Min GPA 3.3 (matches your realistic projected final GPA)',
+      desc:'Achievable — your upward trend + personal statement will be critical',
+      unis:[
+        {name:'University of Glasgow',loc:'🇬🇧 Scotland, UK',gpa:'3.3',acc:'IPEM',schol:'✅',chips:['Target ⚠️','2:1 Equivalent','IPEM Accredited','NHS Training'],cc:['chip-warn','chip-gpa','chip-gpa','chip-good'],accent:'uni-accent-amber',notes:'Your first choice. Taught primarily by NHS medical physicists at DCPB — one of UK\'s largest clinical physics departments with presence in 11 hospitals. Strong personal statement essential.'},
+        {name:'University of Manchester',loc:'🇬🇧 England, UK',gpa:'3.3',acc:'IPEM',schol:'✅',chips:['Target ⚠️','2:1 Equivalent','IPEM Accredited','Cancer Radiation Track'],cc:['chip-warn','chip-gpa','chip-gpa','chip-good'],accent:'uni-accent-amber',notes:'Two MSc tracks: General Medical Physics and Cancer Radiation Therapy. May consider 2:2 applicants via interview. Russell Group. ~40% of cancer cures involve radiotherapy.'},
+        {name:'University of Melbourne',loc:'🇦🇺 Victoria, Australia',gpa:'3.3',acc:'',schol:'✅',chips:['Target ⚠️','Group of Eight','Scholarship Compatible','Strong Research'],cc:['chip-warn','chip-gpa','chip-good','chip-gpa'],accent:'uni-accent-amber',notes:'Group of Eight flagship. Highly regarded globally. Two Holy Mosques scholarship compatible. Strong Medical Physics research department in Faculty of Science.'},
+        {name:'University of Sydney',loc:'🇦🇺 NSW, Australia',gpa:'3.3',acc:'',schol:'✅',chips:['Target ⚠️','Top 20 Global','Scholarship Compatible'],cc:['chip-warn','chip-gpa','chip-good'],accent:'uni-accent-amber',notes:'Top 20 globally (QS 2026). Medical and Radiation Physics programs. Scholarship compatible. Strong clinical connections to Royal Prince Alfred Hospital.'},
+        {name:'Dalhousie University',loc:'🇨🇦 Halifax, Canada',gpa:'3.0',acc:'CAMPEP',schol:'✅',chips:['Target ⚠️','Min 3.0','CAMPEP Accredited','NS Health Authority'],cc:['chip-warn','chip-gpa','chip-gpa','chip-good'],accent:'uni-accent-amber',notes:'CAMPEP accredited in partnership with Nova Scotia Health Authority. Smaller city = lower cost of living. Strong clinical training environment.'},
+        {name:'Purdue University',loc:'🇺🇸 West Lafayette, USA',gpa:'3.0',acc:'CAMPEP',schol:'✅',chips:['Target ⚠️','Min 3.0 (3.2 rec.)','CAMPEP Accredited','No TOEFL Needed'],cc:['chip-warn','chip-gpa','chip-gpa','chip-good'],accent:'uni-accent-amber',notes:'CAMPEP accredited. Recommended GPA 3.2 for MS. GRE required. No TOEFL (CU Boulder degree). Pre-Medical Physics track available. Strong engineering & physics integration.'},
+        {name:'University at Buffalo (SUNY)',loc:'🇺🇸 Buffalo, USA',gpa:'3.0',acc:'CAMPEP',schol:'✅',chips:['Target ⚠️','Min 3.0','CAMPEP Accredited','No TOEFL Needed'],cc:['chip-warn','chip-gpa','chip-gpa','chip-good'],accent:'uni-accent-amber',notes:'CAMPEP accredited MS & PhD. School of Medicine affiliation. Strong diagnostic and therapeutic physics focus. No TOEFL (CU Boulder degree).'},
+      ]
+    },
+    {
+      label:'🚀 Reach — Min GPA 3.5 (need best-case scenario + strong application)',
+      desc:'Apply anyway — your comeback story is compelling to admissions committees',
+      unis:[
+        {name:'McGill University',loc:'🇨🇦 Montreal, Canada',gpa:'3.5',acc:'CAMPEP',schol:'✅',chips:['Reach 🎯','Min 3.5','CAMPEP Accredited','7–8 Spots/Year'],cc:['chip-reach','chip-gpa','chip-gpa','chip-gpa'],accent:'uni-accent-red',notes:'Best Medical Physics in Canada. Only 7-8 students admitted per year from a large international pool. CAMPEP accredited. Apply with a compelling upward trend narrative.'},
+        {name:"King's College London",loc:'🇬🇧 London, UK',gpa:'3.5',acc:'IPEM',schol:'✅',chips:['Reach 🎯','Min 3.5','IPEM Accredited','Central London'],cc:['chip-reach','chip-gpa','chip-gpa','chip-gpa'],accent:'uni-accent-red',notes:'Top UK Medical Physics. World-class research. Central London NHS hospital network. Your journey from 1.267 to 3.5+ is a story worth telling.'},
+        {name:'UCL London',loc:'🇬🇧 London, UK',gpa:'3.5',acc:'IPEM',schol:'✅',chips:['Reach 🎯','QS #9 Global','IPEM Accredited','NHS Partnership'],cc:['chip-reach','chip-gpa','chip-gpa','chip-good'],accent:'uni-accent-red',notes:'Top 10 globally. Two MSc programs (Medical Physics, and Physics & Engineering in Medicine). UCLH NHS Trust partnership. May interview lower GPA applicants.'},
+        {name:'University of Toronto',loc:'🇨🇦 Toronto, Canada',gpa:'3.5',acc:'CAMPEP',schol:'✅',chips:['Reach 🎯','Min 3.5','CAMPEP Accredited','Princess Margaret'],cc:['chip-reach','chip-gpa','chip-gpa','chip-gpa'],accent:'uni-accent-red',notes:'CAMPEP accredited. Partnership with Princess Margaret Cancer Centre — one of the world\'s top 5 cancer centres. Very competitive but worth applying.'},
+      ]
+    },
+    {
+      label:'⭐ Dream — Elite Programs (GPA 3.7+, highly selective)',
+      desc:'Extremely competitive — apply for the experience and the long shot',
+      unis:[
+        {name:'University of Wisconsin–Madison (PhD)',loc:'🇺🇸 Madison, USA',gpa:'3.7+',acc:'CAMPEP',schol:'⚠️',chips:['Dream ⭐','Fully Funded','15–20 Spots/Year','#1 Program'],cc:['chip-reach','chip-good','chip-gpa','chip-gpa'],accent:'uni-accent-red',notes:'The #1 Medical Physics PhD in the world. 15-20 spots per year, fully funded ($37k stipend + tuition). Apply for PhD only if your GPA and research experience are exceptional by SP28.'},
+        {name:'MD Anderson Cancer Center (UTHealth)',loc:'🇺🇸 Houston, USA',gpa:'3.5+',acc:'CAMPEP',schol:'⚠️',chips:['Dream ⭐','CAMPEP Accredited','World #1 Cancer Center','Competitive'],cc:['chip-reach','chip-gpa','chip-gpa','chip-gpa'],accent:'uni-accent-red',notes:'University of Texas MD Anderson — world\'s leading cancer centre. Medical Physics program affiliated with one of the best oncology environments on earth. Very selective.'},
+        {name:'Memorial Sloan Kettering / Columbia',loc:'🇺🇸 New York, USA',gpa:'3.5+',acc:'CAMPEP',schol:'⚠️',chips:['Dream ⭐','CAMPEP Accredited','NYC','Elite'],cc:['chip-reach','chip-gpa','chip-gpa','chip-gpa'],accent:'uni-accent-red',notes:'MSK Cancer Center is globally renowned. Medical Physics residency pipeline. Extremely competitive. Worth applying if your SP28 GPA exceeds 3.5.'},
+      ]
+    },
+  ];
+
+  const NOTE = `<div style="border:1px solid var(--rule);padding:12px 16px;margin-bottom:20px;font-size:13px;font-family:'EB Garamond',serif;background:var(--paper2)">
+    <strong>Two Holy Mosques Scholarship Note:</strong> The Al-Rowad path covers all scientific fields at top accredited universities in the USA, Canada, UK, Australia and Europe. All universities listed are at accredited institutions compatible with the scholarship. The scholarship requires unconditional admission — apply early and secure admission first, then apply for the scholarship through the Safeer 2 platform. CAMPEP accreditation (North America) and IPEM accreditation (UK) are the gold standards for Medical Physics — both are recognized by the scholarship program.
+  </div>`;
+
+  body.innerHTML = NOTE + tiers.map(tier=>`
+    <div class="uni-tier-head">${tier.label}<br><span style="font-size:11px;font-weight:400;opacity:.7">${tier.desc}</span></div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:0;border:1px solid var(--rule);margin-bottom:8px">
+      ${tier.unis.map(u=>`
+        <div class="uni-card ${u.accent}" style="border-right:1px solid var(--rule);border-bottom:1px solid var(--rule)">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:4px">
+            <div class="uni-name" style="margin-bottom:0">${u.name}</div>
+            <span style="font-family:'Courier Prime',monospace;font-size:10px;background:var(--paper2);padding:2px 6px;border:1px solid var(--rule);flex-shrink:0">${u.acc||'Ranked'}</span>
+          </div>
+          <div class="uni-loc">${u.loc} &nbsp;·&nbsp; Scholarship: ${u.schol}</div>
+          <div class="uni-chips">
+            ${u.chips.map((c,i)=>`<span class="uni-chip ${u.cc[i]}">${c}</span>`).join('')}
+            <span class="uni-chip chip-gpa">Min GPA: ${u.gpa}</span>
+          </div>
+          <div class="uni-notes">${u.notes}</div>
+        </div>`).join('')}
+    </div>`).join('');
+
+  // Summary count
+  const total = tiers.reduce((s,t)=>s+t.unis.length,0);
+  body.innerHTML += `<div style="border-top:2px solid var(--ink);padding:12px 0;margin-top:8px;font-family:'Courier Prime',monospace;font-size:11px;color:var(--muted);display:flex;justify-content:space-between">
+    <span>${total} universities across 4 English-speaking countries</span>
+    <span>🟢 ${tiers[0].unis.length} Safety &nbsp;·&nbsp; 🎯 ${tiers[1].unis.length+tiers[2].unis.length} Target &nbsp;·&nbsp; 🚀 ${tiers[3].unis.length} Reach &nbsp;·&nbsp; ⭐ ${tiers[4].unis.length} Dream</span>
+  </div>`;
+}
+
+// ── TABS ──
+function showTab(id,btn){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById(`tab-${id}`).classList.add('active');
+  if(btn)btn.classList.add('active');
+}
+
+
+// ══════════════════════════════════════════════════════════════════
+// CLOUD SYNC — JSONBin.io
+// ══════════════════════════════════════════════════════════════════
+const SYNC = {
+  BIN_ID:  localStorage.getItem('mh_bin_id')  || '',
+  API_KEY: localStorage.getItem('mh_api_key') || '',
+  BASE:    'https://api.jsonbin.io/v3',
+  status:  null,
+};
+
+function syncUI(msg, cls){
+  const el = document.getElementById('sync-status');
+  if(!el) return;
+  el.textContent = msg;
+  el.className = 'sync-badge ' + (cls||'');
+}
+
+async function saveToCloud(){
+  if(!SYNC.API_KEY || !SYNC.BIN_ID){ syncUI('Not configured','warn'); return; }
+  syncUI('Saving…','saving');
+  try{
+    const r = await fetch(`${SYNC.BASE}/b/${SYNC.BIN_ID}`,{
+      method:'PUT',
+      headers:{'Content-Type':'application/json','X-Master-Key':SYNC.API_KEY,'X-Bin-Versioning':'false'},
+      body: JSON.stringify(userGrades)
+    });
+    if(!r.ok) throw new Error(r.status);
+    syncUI('✓ Saved to cloud','ok');
+    setTimeout(()=>syncUI('Connected','ok'), 2000);
+  } catch(e){ syncUI('Save failed','err'); }
+}
+
+async function loadFromCloud(){
+  if(!SYNC.API_KEY || !SYNC.BIN_ID){ return; }
+  syncUI('Loading…','saving');
+  try{
+    const r = await fetch(`${SYNC.BASE}/b/${SYNC.BIN_ID}/latest`,{
+      headers:{'X-Master-Key':SYNC.API_KEY}
+    });
+    if(!r.ok) throw new Error(r.status);
+    const data = await r.json();
+    const grades = data.record || {};
+    if(typeof grades === 'object' && !Array.isArray(grades)){
+      userGrades = grades;
+      save(); // also update localStorage
+      buildTranscript();
+      updateDash();
+      syncUI('✓ Synced from cloud','ok');
+      setTimeout(()=>syncUI('Connected','ok'), 2000);
+    }
+  } catch(e){ syncUI('Load failed — using local','warn'); }
+}
+
+async function createBin(){
+  const key = document.getElementById('api-key-input').value.trim();
+  if(!key){ alert('Please enter your API key first'); return; }
+  syncUI('Creating bin…','saving');
+  try{
+    const r = await fetch(`${SYNC.BASE}/b`,{
+      method:'POST',
+      headers:{'Content-Type':'application/json','X-Master-Key':key,'X-Bin-Name':'Mohammed GPA Grades','X-Collection-Id':''},
+      body: JSON.stringify(userGrades)
+    });
+    if(!r.ok) throw new Error(await r.text());
+    const data = await r.json();
+    SYNC.BIN_ID  = data.metadata.id;
+    SYNC.API_KEY = key;
+    localStorage.setItem('mh_bin_id',  SYNC.BIN_ID);
+    localStorage.setItem('mh_api_key', SYNC.API_KEY);
+    document.getElementById('bin-id-display').textContent = SYNC.BIN_ID;
+    document.getElementById('setup-done').style.display = 'block';
+    document.getElementById('setup-step2').style.display = 'none';
+    syncUI('✓ Cloud sync active','ok');
+  } catch(e){ syncUI('Error: ' + e.message,'err'); alert('Error creating bin: ' + e.message); }
+}
+
+function connectExisting(){
+  const key = document.getElementById('api-key-input').value.trim();
+  const bid = document.getElementById('bin-id-input').value.trim();
+  if(!key || !bid){ alert('Please enter both API key and Bin ID'); return; }
+  SYNC.API_KEY = key; SYNC.BIN_ID = bid;
+  localStorage.setItem('mh_bin_id', bid);
+  localStorage.setItem('mh_api_key', key);
+  document.getElementById('bin-id-display').textContent = bid;
+  document.getElementById('setup-done').style.display = 'block';
+  document.getElementById('setup-step2').style.display = 'none';
+  loadFromCloud();
+}
+
+function resetSync(){
+  if(!confirm('Disconnect cloud sync? Your local grades are kept.')) return;
+  SYNC.API_KEY=''; SYNC.BIN_ID='';
+  localStorage.removeItem('mh_bin_id');
+  localStorage.removeItem('mh_api_key');
+  document.getElementById('setup-done').style.display = 'none';
+  document.getElementById('setup-step2').style.display = 'block';
+  syncUI('Not configured','warn');
+}
+
+function toggleSyncPanel(){
+  const p = document.getElementById('sync-panel');
+  p.style.display = p.style.display==='none' ? 'block' : 'none';
+  // Pre-fill if already configured
+  if(SYNC.API_KEY){
+    document.getElementById('api-key-input').value = SYNC.API_KEY;
+    document.getElementById('bin-id-input').value  = SYNC.BIN_ID;
+    document.getElementById('bin-id-display').textContent = SYNC.BIN_ID;
+    document.getElementById('setup-done').style.display = 'block';
+    document.getElementById('setup-step2').style.display = 'none';
+  }
+}
+
+// Override save() to also push to cloud
+const _localSave = save;
+function save(){
+  _localSave();
+  if(SYNC.API_KEY && SYNC.BIN_ID) saveToCloud();
+}
+
+
+// ── INIT ──
+document.getElementById('today-date').textContent=new Date().toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+buildTranscript();
+buildSemPlan();
+buildRequirements();
+buildTrend();
+buildUnis();
+updateDash();
+// Init sync
+if(SYNC.API_KEY && SYNC.BIN_ID){
+  syncUI('Connecting…','saving');
+  loadFromCloud();
+} else {
+  syncUI('Not configured — click ⚙ Setup Sync','warn');
+}
+</script>
+</body>
+</html>
